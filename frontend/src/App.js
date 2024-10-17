@@ -4,6 +4,7 @@ import instance from './axios';
 import Join from './pages/Join';
 import Home from './pages/Home';
 import Login from './pages/Login';
+import Measurement from './pages/Measurement';
 
 function App() {
 
@@ -26,6 +27,7 @@ function App() {
         <Route path='/' element={<Home />}></Route>
         <Route path='/join' element={<Join />}></Route>
         <Route path='/login' element={<Login />}></Route>
+        <Route path='measurement' element={<Measurement/>}></Route>
       </Routes>
 
       <button onClick={logout}>로그아웃</button>
