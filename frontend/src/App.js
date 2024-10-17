@@ -1,23 +1,34 @@
-import logo from './logo.svg';
+import { Route, Routes } from 'react-router-dom';
 import './App.css';
+import instance from './axios';
+import Join from './pages/Join';
+import Home from './pages/Home';
+import Login from './pages/Login';
 
 function App() {
+
+
+  // < 로그아웃 하려고 만듬 >
+  const logout = async () => {
+    console.log("로그아웃 함수");
+    const res = await instance.get("/logout");
+    console.log("logout res :", res.data);
+
+    // sessionStorage 값 지우기
+    sessionStorage.removeItem("info");
+
+    alert("다음에 또 방문해주세요 ~!");
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Routes>
+        <Route path='/' element={<Home />}></Route>
+        <Route path='/join' element={<Join />}></Route>
+        <Route path='/login' element={<Login />}></Route>
+      </Routes>
+
+      <button onClick={logout}>로그아웃</button>
     </div>
   );
 }
