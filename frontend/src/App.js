@@ -4,7 +4,7 @@ import instance from './axios';
 import Join from './pages/Join';
 import Home from './pages/Home';
 import Login from './pages/Login';
-import { useEffect, useState } from 'react';
+import Measurement from './pages/Measurement';
 
 function App() {
 
@@ -30,7 +30,8 @@ function App() {
       <Routes>
         <Route path='/' element={<Home setUser={setUser} />}></Route>
         <Route path='/join' element={<Join />}></Route>
-        <Route path='/login' element={<Login setUser={setUser} />}></Route>
+        <Route path='/login' element={<Login />}></Route>
+        <Route path='measurement' element={<Measurement/>}></Route>
       </Routes>
 
       
