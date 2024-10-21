@@ -20,7 +20,7 @@ router.post("/join", (req, res) => {
 
     console.log("join router : ", req.body);
     let { id, pw, name, gender, birth } = req.body;
-    pw = cryptoJs.SHA256("pw").toString();  // toString() 으로 문자열 형태로 저장할 수 있게 만들어줌
+    pw = cryptoJs.SHA256(pw).toString();  // toString() 으로 문자열 형태로 저장할 수 있게 만들어줌 // toString() 안 쓰면 저장 안 됨.
     console.log("암호화된 pw : ", pw);
 
     // user_tb 테이블에 회원가입 정보 저장
@@ -41,7 +41,7 @@ router.post("/join", (req, res) => {
 router.post("/login", (req, res) => {
     console.log("login router : ", req.body);
     let { id, pw } = req.body;
-    pw = cryptoJs.SHA256("pw").toString();
+    pw = cryptoJs.SHA256(pw).toString();
 
     let sql = "SELECT user_id, user_pw FROM user_tb WHERE user_id = ? AND user_pw = ?";
     conn.query(sql, [id, pw], (err, rows) => {
@@ -67,17 +67,20 @@ router.post('/api/auth/google', async (req, res) => {
         const payload = ticket.getPayload();
         console.log(payload);
         const userEmail = payload.email;
+        const pw = cryptoJs.SHA256("GOOGLE_AUTH").toString();  // 구글 로그인 사용자는 비밀번호를 따로 입력해주지 않기 때문에 "GOOGLE_AUTH" 로 일단 통일
 
-        let sql = "SELECT * FROM user_tb WHERE user_id";
+        let sql = "SELECT * FROM user_tb WHERE user_id = ?";
         conn.query(sql, [userEmail], (err, rows) => {
+            console.log("구글 id가 있는지 확인 길이 값으로 : ", rows.length);
+            console.log(rows);
             if (err) {
                 console.log("데이터베이스 조회 오류 : ", err);
                 res.json({ success: false });
             }
 
             if (rows.length === 0) {  // DB 에 구글 이메일이 user_id 로 저장되어 있지 않을 때
-                sql = 'INSERT INTO user_tb (user_id, user_pw, user_name, user_gender, user_birthdate) VALUES (?, "GOOGLE_AUTH", ?, "", "2000-01-01")';
-                conn.query(sql, [userEmail, payload.name], (err, rows) => {
+                sql = 'INSERT INTO user_tb (user_id, user_pw, user_name, user_gender, user_birthdate) VALUES (?, ?, ?, "", "2000-01-01")';
+                conn.query(sql, [userEmail, pw,payload.name], (err, rows) => {
                     if (err) {
                         console.log("구글 아이디 데이터 삽입 실패 : ", err);
                         return res.status(500).json({ success: false });

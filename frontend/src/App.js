@@ -5,6 +5,7 @@ import Join from './pages/Join';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Measurement from './pages/Measurement';
+import { useEffect, useState } from 'react';
 
 function App() {
 
@@ -30,7 +31,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Home setUser={setUser} />}></Route>
         <Route path='/join' element={<Join />}></Route>
-        <Route path='/login' element={<Login />}></Route>
+        <Route path='/login' element={<Login setUser={setUser} />}></Route>
         <Route path='measurement' element={<Measurement/>}></Route>
       </Routes>
 
