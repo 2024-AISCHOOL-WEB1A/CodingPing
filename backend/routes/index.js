@@ -71,8 +71,6 @@ router.post('/api/auth/google', async (req, res) => {
 
         let sql = "SELECT * FROM user_tb WHERE user_id = ?";
         conn.query(sql, [userEmail], (err, rows) => {
-            console.log("구글 id가 있는지 확인 길이 값으로 : ", rows.length);
-            console.log(rows);
             if (err) {
                 console.log("데이터베이스 조회 오류 : ", err);
                 res.json({ success: false });
@@ -108,7 +106,7 @@ router.get("/logout", (req, res) => {
             console.error("세션 삭제 중 오류 발생:", err);
             return res.status(500).json({ result: "failed" });
         }
-        res.json({ result: "success" });  // 더 이상 세션 정보 반환하지 않음
+        res.json({ result: "success" });
     });
 });
 router.get("/getSession", (req, res) => {
