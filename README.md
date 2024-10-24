@@ -10,3 +10,10 @@
 ## 규칙
 ### 카멜케이스로 작성하기
 ### 주석에 코멘트 꼭 잘 달아주기!
+
+## 참여인원
+### 유승재 - Front-end, PM
+### 김강현 - Back-end, DB
+### 양준호 - Modeling, Back-end
+### 성시은 - Front-end
+### 임정윤 - Modeling, Back-end
