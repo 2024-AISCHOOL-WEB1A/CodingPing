@@ -1,0 +1,73 @@
+1. 폴더 구조 제안
+    project_root/
+    │
+    ├── app/                 # FastAPI 관련 파일
+    │   ├── main.py          # FastAPI 메인 파일 (엔트리 포인트)
+    │   ├── models/          # 데이터베이스 모델이나 기타 데이터 모델 정의
+    │   ├── routes/          # FastAPI 라우팅 및 엔드포인트
+    │   |── schemas/         # Pydantic을 이용한 데이터 검증 및 스키마 정의
+    |   |__ services/        # 머신러닝 모델 로드 및 예측 로직
+    │
+    ├── backend/             # Node.js 관련 파일
+    │   └── (Node.js 코드)
+    │
+    ├── frontend/            # React 프론트엔드 코드
+    │   └── (React 코드)
+    │
+    ├── model/               # 머신러닝 모델 및 관련 파일
+    │   ├── data/            # 데이터 파일
+    │   ├── utils/           # 유틸리티 및 데이터 전처리 코드
+    │   └── (모델 파일)
+    │
+    └── requirements.txt     # Python 종속성 목록
+
+
+
+2. python 가상환경(myapi)
+    # python 기반의 FastAPI서버에서 필요한 라이브러리만 이 가상환경에 설치
+
+    # 가상환경 활성화
+    fastapi\Scripts\activate  # Windows
+
+    # 가상환경 비활성화
+    deactivate
+
+    # FastAPI와 관련된 라이브러리 설치
+    pip install fastapi uvicorn pydantic
+
+    # 기타 필요한 Python 라이브러리 설치
+    pip install numpy pandas scikit-learn  # 예: 머신러닝 관련
+    pip install SQLAlchemy  # 예: 데이터베이스 연동
+
+    # 설치된 라이브러리 목록 requirements.txt에 저장
+    pip freeze > requirements.txt
+
+    # FastAPI 애플리케이션 실행
+    uvicorn app.main:app --reload
+
+
+3. Node.js 환경 (backend)
+    # backend 폴더로 이동
+    cd backend
+
+    # NPM 초기화 (package.json 파일 생성)
+    npm init -y
+
+    # 필요한 라이브러리 설치
+    npm install express mongoose cors  # 예: Express 서버와 MongoDB 관련
+    npm install dotenv  # 환경 변수 관리
+    npm install axios  # HTTP 요청 라이브러리
+
+
+
+4. React 환경 (frontend)
+    # frontend 폴더로 이동
+    cd frontend
+
+    # React 앱 초기화 (Create React App 사용 시)
+    npx create-react-app .
+
+    # 필요한 라이브러리 설치
+    npm install axios  # HTTP 요청
+    npm install redux react-redux  # 상태 관리
+
