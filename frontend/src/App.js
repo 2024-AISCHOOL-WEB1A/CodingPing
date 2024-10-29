@@ -7,6 +7,7 @@ import Join from './pages/Join';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Measurement from './pages/Measurement';
+import Header from './components/Header';
 
 function App() {
   const location = useLocation();
@@ -15,82 +16,90 @@ function App() {
   const [sInfo, setSInfo] = useState();
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // 현재 session 값을 확인할 수 있는 함수
   const getSession = async () => {
-    const res = await instance.get("/getSession")
+    const res = await instance.get("/getSession");
   }
 
   useEffect(() => {
     getSession();
     console.log("session안에 값", JSON.parse(sessionStorage.getItem("info")));
-    setSInfo(JSON.parse(sessionStorage.getItem("info")))
+    setSInfo(JSON.parse(sessionStorage.getItem("info")));
   }, [user]);
 
-  // 라우트 변경 감지
   useEffect(() => {
     setIsHome(location.pathname === '/');
   }, [location]);
 
-  // work.js 초기화 (Home 페이지일 때만)
   useEffect(() => {
-    // Home 페이지가 아니면 work.js를 로드하지 않음
     if (!isHome) return;
 
-    // jQuery를 전역 객체(window)에 할당
     window.jQuery = window.$ = $;
 
-    // work.js를 로드하고 초기화 하는 함수
     const initializeWorkJs = () => {
       const script = document.createElement('script');
       script.src = `${process.env.PUBLIC_URL}/work.js`;
       script.async = true;
       
-      // 스크립트 완료시 실행되는 함수 
       script.onload = () => {
-        setTimeout(() => {
-          if (window.app && typeof window.app.init === 'function') {
-            try {
-              window.app.init();
-            } catch (error) {
-              console.error('work.js 초기화 중 에러:', error);
-            }
-          }
-          setIsLoaded(true);
-        }, 100);
+        // DOM이 완전히 로드된 후에 초기화하도록 수정
+        if (document.readyState === 'complete') {
+          initApp();
+        } else {
+          window.addEventListener('load', initApp);
+        }
       };
 
-      // 스크립트 로드 중 에러 발생 시 처리
       script.onerror = (error) => {
         console.error('work.js 로드 중 에러:', error);
       };
 
-      // body에 스크립트 태그 추가
       document.body.appendChild(script);
+    };
+
+    const initApp = () => {
+      setTimeout(() => {
+        try {
+          if (window.app && typeof window.app.init === 'function') {
+            // 스크롤바 초기화 전에 DOM 요소 존재 여부 확인
+            const content = document.querySelector('#content'); // 실제 컨텐츠 요소의 선택자로 변경해주세요
+            if (content) {
+              window.app.init();
+            } else {
+              console.warn('Content element not found, deferring initialization');
+            }
+          }
+          setIsLoaded(true);
+        } catch (error) {
+          console.error('work.js 초기화 중 에러:', error);
+        }
+      }, 100);
     };
 
     initializeWorkJs();
 
-    // 클린업 함수
     return () => {
       const script = document.querySelector(`script[src*="work.js"]`);
       if (script) {
         script.remove();
       }
-      // work.js에 의해 추가된 이벤트 리스너나 다른 리소스들을 정리
+      window.removeEventListener('load', initApp);
       if (window.app && typeof window.app.cleanup === 'function') {
         window.app.cleanup();
       }
     };
-  }, [isHome]); // isHome이 변경될 때만 이 효과를 재실행
+  }, [isHome]);
 
   return (
     <div className="App">
-      <Routes>
-        <Route path='/' element={<Home setUser={setUser} />} />
-        <Route path='/join' element={<Join />} />
-        <Route path='/login' element={<Login setUser={setUser} />} />
-        <Route path='/measurement' element={<Measurement />} />
-      </Routes>
+      <Header />
+      <div id="content"> {/* 스크롤바를 적용할 컨테이너 추가 */}
+        <Routes>
+          <Route path='/' element={<Home setUser={setUser} />} />
+          <Route path='/join' element={<Join />} />
+          <Route path='/login' element={<Login setUser={setUser} />} />
+          <Route path='/measurement' element={<Measurement />} />
+        </Routes>
+      </div>
     </div>
   );
 }

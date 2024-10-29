@@ -10613,14 +10613,18 @@
           t.content = n.find(".wt-content")
       },
       refresh: function (t) {
-        t.mobile || t.scrollbar || (t.scrollbar = a.default.init(t.content[0], {
-          renderByPixels: !1,
-          damping: .06,
-          delegateTo: t.content[0]
-        }),
+        // Home.jsx외에 페이지에서도 헤더기능을 정상적으로 작동시키기 위한 수정 시작
+        if (!t.mobile && !t.scrollbar && window.location.pathname === '/') {
+          t.scrollbar = a.default.init(t.content[0], {
+            renderByPixels: !1,
+            damping: .06,
+            delegateTo: t.content[0]
+          }),
           t.scrollbar.addListener(function (e) {
             return t.window.trigger("scrolling", e.offset.y, e.offset.x)
-          })),
+          })
+        }
+        // 수정 끝
           t.view.find(".wt-envelope").each(function () {
             var t = (0,
               r.default)(this)
