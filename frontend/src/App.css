@@ -313,6 +313,20 @@
 }
 /* 회원가입 페이지 css 끝 */
 
+/* 로그아웃 버튼 css 시작 */
+.nav-button{
+  background: none;
+  border: none;
+  color: inherit; /* 텍스트 색상을 부모 요소와 동일하게 */
+  font: inherit;  /* 폰트를 부모 요소와 동일하게 */
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  text-decoration: none; /* 링크의 밑줄 제거 */
+  display: inline-block; /* 링크와 동일한 display 속성 */
+}
+/* 로그아웃 버튼 css 끝 */
+
 /* 시작 */
 html, body {
   height: 100%;

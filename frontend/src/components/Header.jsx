@@ -1,7 +1,33 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import instance from '../axios';
 
-const Header = () => {
+const Header = ({ user, setUser }) => {
+
+  // sessionStorage에서 직접 로그인 상태 확인
+  const isLoggedIn = () => {
+    const sessionInfo = sessionStorage.getItem("info");
+    if (sessionInfo) {
+      const info = JSON.parse(sessionInfo);
+      return info.auth === "user" && info.user_id;
+    }
+    return false;
+  }
+
+  // 로그아웃 함수
+  const logout = async () => {
+    console.log("로그아웃 함수");
+    const res = await instance.get("/logout");
+    console.log("logout res :", res.data);
+
+    // sessionStorage 값 지우기
+    sessionStorage.removeItem("info");
+
+    setUser("");
+    alert("다음에 또 방문해주세요 ~!");
+    window.location.href = '/';
+  }
+
   return (
     <nav className="wt-navbar">
       <div className="wt-navbar-strip">
@@ -15,34 +41,54 @@ const Header = () => {
                 </a>
               </div>
             </div>
-            {/* 회원가입, 로그인, 서비스 이용 추후에 link나 navigation을 활용하여 페이지 이동하게 할 것 */}
-            {/* 로그인이 된 상태라면 상단바의 텍스트들이 달라져야함 마이페이지가 있어야되고 로그인 된 상태에서 try를 누르면 측정
-              페이지로, 로그인이 된 상태가 아니라면 try를 누르면 로그인/회원가입 페이지로 이동하게 할 것
-            */}
             <div className="wt-navbar-grid-col -right">
               <div className="wt-navbar-nav" role="navigation">
-                {/* 페이지 이동을 위한 Link 컴포넌트 사용 */}
-                <Link
-                  to="/join"
-                  className="wt-navbar-nav-item router-link"
-                  data-magnetic
-                  data-cursor="-scale"
-                >
-                  <span className="wt-navbar-nav-item-bound">
-                    <span data-text="Join">Join</span>
-                  </span>
-                </Link>
-
-                <Link
-                  to="/login"
-                  className="wt-navbar-nav-item router-link"
-                  data-magnetic
-                  data-cursor="-scale"
-                >
-                  <span className="wt-navbar-nav-item-bound">
-                    <span data-text="Login">Login</span>
-                  </span>
-                </Link>
+                {!isLoggedIn() ? (
+                  <Link
+                    to="/join"
+                    className="wt-navbar-nav-item router-link"
+                    data-magnetic
+                    data-cursor="-scale"
+                  >
+                    <span className="wt-navbar-nav-item-bound">
+                      <span data-text="Join">Join</span>
+                    </span>
+                  </Link>
+                ) : (
+                  <Link
+                    to="/mypage"
+                    className="wt-navbar-nav-item router-link"
+                    data-magnetic
+                    data-cursor="-scale"
+                  >
+                    <span className="wt-navbar-nav-item-bound">
+                      <span data-text="Mypage">Mypage</span>
+                    </span>
+                  </Link>
+                )}
+                {!isLoggedIn() ? (
+                  <Link
+                    to="/login"
+                    className="wt-navbar-nav-item router-link"
+                    data-magnetic
+                    data-cursor="-scale"
+                  >
+                    <span className="wt-navbar-nav-item-bound">
+                      <span data-text="Login">Login</span>
+                    </span>
+                  </Link>
+                ) : (
+                  <button
+                    className="wt-navbar-nav-item router-link nav-button"
+                    onClick={logout}
+                    data-magnetic
+                    data-cursor="-scale"
+                  >
+                    <span className="wt-navbar-nav-item-bound">
+                      <span data-text="Logout">Logout</span>
+                    </span>
+                  </button>
+                )}
               </div>
               <div className="wt-navbar-sign">
                 <button className="wt-btn wt-btn_sign" data-section-target="try" data-cursor="-default">
