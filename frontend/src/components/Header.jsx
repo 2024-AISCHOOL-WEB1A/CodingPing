@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const Header = () => {
   return (
@@ -20,16 +21,28 @@ const Header = () => {
             */}
             <div className="wt-navbar-grid-col -right">
               <div className="wt-navbar-nav" role="navigation">
-                <a className="wt-navbar-nav-item" href="" data-section-target="join" data-magnetic data-cursor="-scale">
+                {/* 페이지 이동을 위한 Link 컴포넌트 사용 */}
+                <Link
+                  to="/join"
+                  className="wt-navbar-nav-item router-link"
+                  data-magnetic
+                  data-cursor="-scale"
+                >
                   <span className="wt-navbar-nav-item-bound">
                     <span data-text="Join">Join</span>
                   </span>
-                </a>
-                <a className="wt-navbar-nav-item" href="" data-section-target="login" data-magnetic data-cursor="-scale">
+                </Link>
+
+                <Link
+                  to="/login"
+                  className="wt-navbar-nav-item router-link"
+                  data-magnetic
+                  data-cursor="-scale"
+                >
                   <span className="wt-navbar-nav-item-bound">
                     <span data-text="Login">Login</span>
                   </span>
-                </a>
+                </Link>
               </div>
               <div className="wt-navbar-sign">
                 <button className="wt-btn wt-btn_sign" data-section-target="try" data-cursor="-default">
