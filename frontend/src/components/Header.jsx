@@ -1,7 +1,22 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import instance from '../axios';
 
-const Header = () => {
+const Header = ({ user, setUser }) => {
+
+  // 로그아웃 함수
+  const logout = async () => {
+    console.log("로그아웃 함수");
+    const res = await instance.get("/logout");
+    console.log("logout res :", res.data);
+
+    // sessionStorage 값 지우기
+    sessionStorage.removeItem("info");
+
+    setUser("");
+    alert("다음에 또 방문해주세요 ~!");
+  }
+
   return (
     <nav className="wt-navbar">
       <div className="wt-navbar-strip">
@@ -22,27 +37,52 @@ const Header = () => {
             <div className="wt-navbar-grid-col -right">
               <div className="wt-navbar-nav" role="navigation">
                 {/* 페이지 이동을 위한 Link 컴포넌트 사용 */}
-                <Link
-                  to="/join"
-                  className="wt-navbar-nav-item router-link"
-                  data-magnetic
-                  data-cursor="-scale"
-                >
-                  <span className="wt-navbar-nav-item-bound">
-                    <span data-text="Join">Join</span>
-                  </span>
-                </Link>
-
-                <Link
-                  to="/login"
-                  className="wt-navbar-nav-item router-link"
-                  data-magnetic
-                  data-cursor="-scale"
-                >
-                  <span className="wt-navbar-nav-item-bound">
-                    <span data-text="Login">Login</span>
-                  </span>
-                </Link>
+                {!user ? (
+                  <Link
+                    to="/join"
+                    className="wt-navbar-nav-item router-link"
+                    data-magnetic
+                    data-cursor="-scale"
+                  >
+                    <span className="wt-navbar-nav-item-bound">
+                      <span data-text="Join">Join</span>
+                    </span>
+                  </Link>
+                ) : (
+                  <Link
+                    to="/mypage"
+                    className="wt-navbar-nav-item router-link"
+                    data-magnetic
+                    data-cursor="-scale"
+                  >
+                    <span className="wt-navbar-nav-item-bound">
+                      <span data-text="Mypage">Mypage</span>
+                    </span>
+                  </Link>
+                )}
+                {!user ? (
+                  <Link
+                    to="/login"
+                    className="wt-navbar-nav-item router-link"
+                    data-magnetic
+                    data-cursor="-scale"
+                  >
+                    <span className="wt-navbar-nav-item-bound">
+                      <span data-text="Login">Login</span>
+                    </span>
+                  </Link>
+                ) : (
+                  <button
+                    className="wt-navbar-nav-item router-link"
+                    data-magnetic
+                    data-cursor="-scale"
+                    onClick={logout}
+                  >
+                    <span className="wt-navbar-nav-item-bound">
+                      <span data-text="Logout">Logout</span>
+                    </span>
+                  </button>
+                )}
               </div>
               <div className="wt-navbar-sign">
                 <button className="wt-btn wt-btn_sign" data-section-target="try" data-cursor="-default">

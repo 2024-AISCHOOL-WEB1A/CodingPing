@@ -133,7 +133,7 @@ const storage = multer.diskStorage({
     filename: (req, file, cb) => {
         const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
         const ext = path.extname(file.originalname);  // 파일 확장자 가져오기
-        cb(null, uniqueSuffix + ext);  // 파일 이름에 확장자 추가
+        cb(null, uniqueSuffix + ext);  // 파일 이름에 확장자 추가 (.jpg / .png 와 같은 확장자를 파일 이름 뒤에 추가해준 것)
     }
 });
 const upload = multer({ storage: storage });
