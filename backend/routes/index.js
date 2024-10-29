@@ -27,11 +27,17 @@ router.post("/join", (req, res) => {
     pw = cryptoJs.SHA256(pw).toString();  // toString() 으로 문자열 형태로 저장할 수 있게 만들어줌 // toString() 안 쓰면 저장 안 됨.
     console.log("암호화된 pw : ", pw);
 
+    if (gender === "male") {
+        gender = "M";
+    } else {
+        gender = "F";
+    }
+
     // user_tb 테이블에 회원가입 정보 저장
     const sql = "INSERT INTO user_tb (user_id, user_pw, user_name, user_gender, user_birthdate) VALUES (?, ?, ?, ?, ?)";
     conn.query(sql, [id, pw, name, gender, birth], (err, rows) => {
         if (err) {
-            console.log("데이터 삽입 실패 ..");
+            console.log("데이터 삽입 실패 .. : ", err);
             res.json({ result: "failed" });
         } else {
             console.log("데이터 삽입 성공 !!", rows);
