@@ -10,6 +10,12 @@
   font-style: normal;
 }
 
+*{
+  font-family: 'Pretendard-ExtraBold';
+  font-weight: 900;
+}
+/* 글꼴 변경 끝 */
+
 /* 로그인 페이지 css 시작 */
 .login-container {
   min-height: 100vh;
@@ -306,12 +312,6 @@
   }
 }
 /* 회원가입 페이지 css 끝 */
-
-*{
-  font-family: 'Pretendard-ExtraBold';
-  font-weight: 900;
-}
-/* 글꼴 변경 끝 */
 
 /* 시작 */
 html, body {

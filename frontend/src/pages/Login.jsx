@@ -4,6 +4,7 @@ import { User, Lock } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from "jwt-decode";
+import { Link } from 'react-router-dom';
 
 const Login = ({ setUser }) => {
   const [id, setId] = useState('');
@@ -91,7 +92,7 @@ const Login = ({ setUser }) => {
           </button>
 
           <div className="login-links">
-            <a href="/join">회원가입</a>
+            <Link to ='/join'>회원가입</Link>
           </div>
 
           <div className="social-login">

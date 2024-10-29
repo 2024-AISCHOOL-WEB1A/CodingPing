@@ -1,7 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
 import instance from '../axios';
-import Header from '../components/Header';
 import Content from '../components/Content'
 import Main from '../components/Main';
 import FeatureComponent from '../components/FeatureComponent';
