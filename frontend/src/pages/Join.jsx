@@ -23,9 +23,9 @@ const Join = () => {
       });
 
       if (res.data.result === "success") {
-        window.alert("성공 !!");
+        window.alert("회원가입 성공 !!");
       } else {
-        window.alert("실패 ..");
+        window.alert("회원 가입에 실패하셨습니다. 다시 한 번 시도해주세요.");
       }
     } catch (err) {
       console.log(err);
