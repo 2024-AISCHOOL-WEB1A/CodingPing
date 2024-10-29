@@ -17,6 +17,8 @@ app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 
+// 이미지가 저장된 'upload' 폴더를 정적 파일 경로로 설정
+app.use('/uploads', express.static('upload'))
 
 // 세션 설정
 const session = require("express-session")
@@ -38,7 +40,8 @@ app.use(session({
 }))
 
 
-app.use("/", indexRouter)
+app.use("/", indexRouter);
+
 
 app.set("port", process.env.PORT || 3007)
 app.listen(app.get("port"), () => {
