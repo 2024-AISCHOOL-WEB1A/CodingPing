@@ -23,7 +23,9 @@ const Join = () => {
       });
 
       if (res.data.result === "success") {
-        window.alert("회원가입 성공 !!");
+        window.alert("회원가입 성공 !!")
+        // nav("/") 대신 window.location.href 사용 로그인 성공 후 메인페이지 이동시 동적효과 작동을 위하여
+        window.location.href = '/';
       } else {
         window.alert("회원 가입에 실패하셨습니다. 다시 한 번 시도해주세요.");
       }

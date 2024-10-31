@@ -31,7 +31,6 @@ const Home = ({ setUser }) => {
 
   return (
     <div className="wt-page" id="page">
-      {/* <Header /> */}
       <div className="wt-view" data-controller="homeController" id="view-main">
         <div className="wt-content" role="main" style={contentStyle}>
           <Main/>

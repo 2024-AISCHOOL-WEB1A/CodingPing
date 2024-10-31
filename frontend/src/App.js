@@ -12,7 +12,7 @@ import Header from './components/Header';
 function App() {
 	const location = useLocation();
 	const [isHome, setIsHome] = useState(location.pathname === '/');
-	const [user, setUser] = useState("");
+	const [user, setUser] = useState();
 	const [sInfo, setSInfo] = useState();
 	const [isLoaded, setIsLoaded] = useState(false);
 
@@ -89,19 +89,19 @@ function App() {
 		};
 	}, [isHome]);
 
-	return (
+  return (
 		<div className="App">
 			<Header user={user} setUser={setUser} />
 			<div id="content"> {/* 스크롤바를 적용할 컨테이너 추가 */}
 				<Routes>
-					<Route path='/' element={<Home setUser={setUser} />} />
-					<Route path='/join' element={<Join />} />
-					<Route path='/login' element={<Login setUser={setUser} />} />
-					<Route path='/measurement' element={<Measurement />} />
+				<Route path='/' element={<Home setUser={setUser} />} />
+				<Route path='/join' element={<Join />} />
+				<Route path='/login' element={<Login setUser={setUser} />} />
+				<Route path='/measurement' element={<Measurement />} />
 				</Routes>
 			</div>
 		</div>
-	);
+  );
 }
 
 export default App;

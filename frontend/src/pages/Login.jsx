@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 import instance from '../axios';
 import { User, Lock } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from "jwt-decode";
-import { Link } from 'react-router-dom';
 
 const Login = ({ setUser }) => {
   const [id, setId] = useState('');
   const [pw, setPw] = useState('');
-  const nav = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -52,7 +50,8 @@ const Login = ({ setUser }) => {
     }
     sessionStorage.setItem("info", JSON.stringify(obj));
     alert("환영합니다 !!");
-    nav("/");
+    // nav("/") 대신 window.location.href 사용 로그인 성공 후 메인페이지 이동시 동적효과 작동을 위하여
+    window.location.href = '/';
   }
 
   return (
@@ -92,7 +91,7 @@ const Login = ({ setUser }) => {
           </button>
 
           <div className="login-links">
-            <Link to ='/join'>회원가입</Link>
+            <Link to='/join'>회원가입</Link>
           </div>
 
           <div className="social-login">
