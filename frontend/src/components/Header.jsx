@@ -3,28 +3,27 @@ import { Link } from 'react-router-dom'
 import instance from '../axios';
 
 const Header = ({ user, setUser }) => {
+	// sessionStorage에서 직접 로그인 상태 확인
+	const isLoggedIn = () => {
+		const sessionInfo = sessionStorage.getItem("info");
+		if (sessionInfo) {
+			const info = JSON.parse(sessionInfo);
+			return info.auth === "user" && info.user_id;
+		}
+		return false;
+	}
 
-  // sessionStorage에서 직접 로그인 상태 확인
-  const isLoggedIn = () => {
-    const sessionInfo = sessionStorage.getItem("info");
-    if (sessionInfo) {
-      const info = JSON.parse(sessionInfo);
-      return info.auth === "user" && info.user_id;
-    }
-    return false;
-  }
+	// 로그아웃 함수
+	const logout = async () => {
+		console.log("로그아웃 함수");
+		const res = await instance.get("/logout");
+		console.log("logout res :", res.data);
 
-  // 로그아웃 함수
-  const logout = async () => {
-    console.log("로그아웃 함수");
-    const res = await instance.get("/logout");
-    console.log("logout res :", res.data);
-
-    // sessionStorage 값 지우기
-    sessionStorage.removeItem("info");
+		// sessionStorage 값 지우기
+		sessionStorage.removeItem("info");
 
     setUser("");
-    alert("로그아웃 완료");
+    alert("다음에 또 방문해주세요 ~!");
     window.location.href = '/';
   }
 
@@ -37,7 +36,7 @@ const Header = ({ user, setUser }) => {
               <div className="wt-navbar-logo" data-magnetic data-cursor="-normal">
                 {/* 로고부분 */}
                 <a href="/" aria-label="Wickret">
-                  <img src="/img/logo1.png" srcSet="/img/logo@2x.png 2x" alt="" />
+                  <img src="/img/logo.png" srcSet="/img/logo@2x.png 2x" alt="" />
                 </a>
               </div>
             </div>

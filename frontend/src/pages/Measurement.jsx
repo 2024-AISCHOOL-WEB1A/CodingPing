@@ -57,6 +57,7 @@ const Measurement = () => {
 				<div style={styles.silhouette}>
 					{imagePath && (
 						<img src={`http://localhost:3007/uploads/${imagePath.split('/')[1]}`} alt="Uploaded" />
+						// <img src={`http://127.0.0.1:8000/${imagePath}`} alt="Modeled" />
 					)}
 				</div>
 				<form style={styles.form} onSubmit={handleSubmit}>
