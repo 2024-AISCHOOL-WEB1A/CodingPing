@@ -24,7 +24,7 @@ const Header = ({ user, setUser }) => {
     sessionStorage.removeItem("info");
 
     setUser("");
-    alert("다음에 또 방문해주세요 ~!");
+    alert("로그아웃 완료");
     window.location.href = '/';
   }
 
