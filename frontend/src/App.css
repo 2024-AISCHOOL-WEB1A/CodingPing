@@ -980,20 +980,20 @@ button:not(:disabled) {
 */
 .wt-sprite {
   display: inline-block;
-  /* background-image: url(../img/sprites/sprites.png); */
+  background-image: url(../public/img/sprites.png);
   background-repeat: no-repeat
 }
 
 .wt-sprite.-e-alarm {
-  background-position: -77px -76px;
-  width: 25px;
-  height: 28px
+  background-position: -75px -58px;
+  width: 30px;
+  height: 30px
 }
 
 .wt-sprite.-e-book {
-  background-position: 0 -109px;
-  width: 24px;
-  height: 29px
+  background-position: -123px -90px;
+  width: 50px;
+  height: 40px
 }
 
 .wt-sprite.-e-briefcase {
@@ -1003,9 +1003,9 @@ button:not(:disabled) {
 }
 
 .wt-sprite.-e-clutch {
-  background-position: -99px -38px;
-  width: 40px;
-  height: 36px
+  background-position: -101px -32px;
+  width: 35px;
+  height: 34px
 }
 
 .wt-sprite.-e-darts {
@@ -1016,37 +1016,37 @@ button:not(:disabled) {
 
 .wt-sprite.-e-diamond {
   background-position: -99px 0;
-  width: 44px;
-  height: 37px
+  width: 42px;
+  height: 32px
 }
 
 .wt-sprite.-e-key {
-  background-position: -48px 0;
+  background-position: -52px 0;
   width: 50px;
   height: 50px
 }
 
 .wt-sprite.-e-money {
-  background-position: 0 -76px;
+  background-position: 0 -91px;
   width: 47px;
   height: 32px
 }
 
 .wt-sprite.-e-moneybag {
-  background-position: -144px 0;
+  background-position: -140px 0;
   width: 32px;
-  height: 43px
+  height: 40px
 }
 
 .wt-sprite.-e-ok {
-  background-position: -144px -44px;
+  background-position: -138px -39px;
   width: 31px;
-  height: 40px
+  height: 42px
 }
 
 .wt-sprite.-wcard {
   background-position: 0 0;
-  width: 47px;
+  width: 52px;
   height: 75px
 }
 

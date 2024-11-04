@@ -37,7 +37,7 @@ const Header = ({ user, setUser }) => {
               <div className="wt-navbar-logo" data-magnetic data-cursor="-normal">
                 {/* 로고부분 */}
                 <a href="/" aria-label="Wickret">
-                  <img src="/img/logo.png" srcSet="/img/logo@2x.png 2x" alt="" />
+                  <img src="/img/logo1.png" srcSet="/img/logo@2x.png 2x" alt="" />
                 </a>
               </div>
             </div>

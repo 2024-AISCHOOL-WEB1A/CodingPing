@@ -58,10 +58,10 @@ const Envelope = () => {
                 </div>
                 <div className="wt-description-grid-col -right">
                   <div className="wt-description-figure -multiple" data-cursor="-exclusion">
-                    <img src="/assets/img/figure/2/1.png" srcSet="/assets/img/figure/2/1@2x.png 2x" alt="" />
-                    <img src="/assets/img/figure/2/2.png" srcSet="/assets/img/figure/2/2@2x.png 2x" alt="" />
-                    <img src="/assets/img/figure/2/3.png" srcSet="/assets/img/figure/2/3@2x.png 2x" alt="" />
-                    <img src="/assets/img/figure/2/4.png" srcSet="/assets/img/figure/2/4@2x.png 2x" alt="" />
+                    <img src="/img/1.png" srcSet="/assets/img/figure/2/1@2x.png 2x" alt="" />
+                    <img src="/img/notebook.png" srcSet="/assets/img/figure/2/2@2x.png 2x" alt="" />
+                    {/* <img src="/img/phone.png" srcSet="/assets/img/figure/2/3@2x.png 2x" alt="" /> */}
+                    <img src="/img/4.png" srcSet="/assets/img/figure/2/4@2x.png 2x" alt="" />
                   </div>
                 </div>
               </div>

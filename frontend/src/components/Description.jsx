@@ -10,9 +10,9 @@ const Description = () => {
               <div className="wt-description-grid">
                 <div className="wt-description-grid-col -left">
                   <div className="wt-description-figure -multiple" data-cursor="-exclusion">
-                    <img src="/assets/img/figure/1/1.png" srcSet="/assets/img/figure/1/1@2x.png 2x" alt="" />
-                    <img src="/assets/img/figure/1/2.png" srcSet="/assets/img/figure/1/2@2x.png 2x" alt="" />
-                    <img src="/assets/img/figure/1/3.png" srcSet="/assets/img/figure/1/3@2x.png 2x" alt="" />
+                    <img src="/img/2.png" srcSet="/assets/img/figure/1/1@2x.png 2x" alt="" />
+                    <img src="/img/shopping1.png" srcSet="/img/shopping1.png 2x" alt="" />
+                    <img src="/img/3.png" srcSet="/img/3.png 2x" alt="" />
                   </div>
                 </div>
                 <div className="wt-description-grid-col -right">

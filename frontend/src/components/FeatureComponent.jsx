@@ -50,7 +50,7 @@ const FeatureComponent = () => {
                             in2="warp"></feDisplacementMap>
                         </filter>
                       </defs>
-                      <image xlinkHref="/assets/img/screens/1@2x.png" style={{ filter: 'url(#feaute-demo-filter-1)' }}
+                      <image xlinkHref="/img/feature1.png" style={{ filter: 'url(#feaute-demo-filter-1)' }}
                         width="463" height="463" x="0" y="0"></image>
                     </svg>
                   </div>
@@ -64,7 +64,7 @@ const FeatureComponent = () => {
                             in2="warp"></feDisplacementMap>
                         </filter>
                       </defs>
-                      <image xlinkHref="/assets/img/screens/2@2x.png" style={{ filter: 'url(#feaute-demo-filter-2)' }}
+                      <image xlinkHref="/img/feature2.png" style={{ filter: 'url(#feaute-demo-filter-2)' }}
                         width="463" height="463" x="0" y="0"></image>
                     </svg>
                   </div>
@@ -78,7 +78,7 @@ const FeatureComponent = () => {
                             in2="warp"></feDisplacementMap>
                         </filter>
                       </defs>
-                      <image xlinkHref="/assets/img/screens/3@2x.png" style={{ filter: 'url(#feaute-demo-filter-3)' }}
+                      <image xlinkHref="/img/feature3.png" style={{ filter: 'url(#feaute-demo-filter-3)' }}
                         width="463" height="463" x="0" y="0"></image>
                     </svg>
                   </div>
@@ -95,7 +95,7 @@ const FeatureComponent = () => {
                     and payments
                   </div>
                   <div className="wt-feature-item" role="listitem">
-                    Banking for all <s className="wt-sprite -e-darts"></s>
+                    Banking for all <s className="wt-sprite -wcard"></s>
                     personal, business
                   </div>
                 </div>
