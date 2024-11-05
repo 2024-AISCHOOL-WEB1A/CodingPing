@@ -128,12 +128,25 @@ const Header = ({ user, setUser }) => {
         <div className="wt-navbar-menu-content">
           <div className="wt-navbar-menu-container">
             <div className="wt-navbar-menu-nav" role="navigation">
-              <Link className="wt-navbar-menu-nav-item" to="/join">
-                <span>Join</span>
-              </Link>
-              <Link className="wt-navbar-menu-nav-item" to="/login">
-                <span>Login</span>
-              </Link>
+              {!isLoggedIn() ? (
+                <>
+                  <Link className="wt-navbar-menu-nav-item" to="/join">
+                    <span>Join</span>
+                  </Link>
+                  <Link className="wt-navbar-menu-nav-item" to="/login">
+                    <span>Login</span>
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link className="wt-navbar-menu-nav-item" to="/mypage">
+                    <span>Mypage</span>
+                  </Link>
+                  <Link className="wt-navbar-menu-nav-item" to="/measurement">
+                    <span>Try</span>
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>
