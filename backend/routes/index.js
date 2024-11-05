@@ -164,7 +164,7 @@ router.post("/measurement", upload.single("image"), async (req, res) => {
         // console.log("서버 응답:", testResponse.status);
 
         // FastAPI 서버에 이미지와 폼 데이터를 POST 요청으로 전송
-        const url = "https://1408-114-110-132-4.ngrok-free.app/predict";  // 수시로 바뀜
+        const url = "https://5955-114-110-128-38.ngrok-free.app/predict";  // 수시로 바뀜
         const response = await axios.post(url, formData, {
             // headers: {
             //     ...formData.getHeaders(), // FormData 의 기본 헤더 설정
@@ -176,11 +176,38 @@ router.post("/measurement", upload.single("image"), async (req, res) => {
 
         console.log("측정 라우터에서 모델로 response data : ", response.data);
 
+        // res.json(response.data);
+
         // FastAPI로부터 반환된 새 이미지 경로를 구조 분해 할당
-        // newImagePath: 모델링된 새 이미지 경로
+        // imagePath: 모델링된 새 이미지 경로
         // modelResults: 기타 모델링 결과 데이터 (어깨 너비, 가슴 둘레 등)
-        const { newImagePath, ...modelResults } = response.data;
-        res.json(response.data);
+        // const { imagePath, ...modelResults } = response.data;
+
+
+        const saveMeshImage = (imagePath, saveFolderPath) => {
+            // 파일명 추출
+            const fileName = path.basename(imagePath);
+            const savePath = path.join(saveFolderPath, fileName);
+
+            // 폴더가 없으면 생성
+            if (!fs.existsSync(saveFolderPath)) {
+                fs.mkdirSync(saveFolderPath, { recursive: true });
+            }
+
+            // 파일 복사
+            fs.copyFile(imagePath, savePath, (err) => {
+                if (err) {
+                    console.error(`Error copying image: ${err}`);
+                } else {
+                    console.log(`Image copied to ${savePath}`);
+                }
+            });
+        }
+
+        const imagePath = response_data.image_path;
+        const saveFolderPath = path.join(__dirname, "..", 'meshImage');
+
+        copyImageToMeshFolder(imagePath, saveFolderPath);
 
         // newImagePath 를 포함한 모델링을 통해서 나온 사용자의 신체 정보를 DB 에 저장하는 코드 작성하기
         // const sql = "INSERT INTO body_tb (user_id, height, weight, 모델링 결과 값들 .., img) VALUES (?, ?, ?, ? ..., ?)";
