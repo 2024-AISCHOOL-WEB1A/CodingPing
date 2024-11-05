@@ -391,6 +391,26 @@ html, body {
 }
 /* 끝 */
 
+/* try버튼 css 시작 */
+.wt-navbar-sign .wt-btn_sign {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wt-navbar-sign .wt-btn_sign-bound {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wt-navbar-sign .wt-btn_sign span[data-text] {
+  position: relative;
+  display: inline-block;
+}
+/* 끝 */
+
 /*! normalize.css v7.0.0 | MIT License | github.com/necolas/normalize.css */
 html {
   line-height: 1.15;
@@ -980,20 +1000,20 @@ button:not(:disabled) {
 */
 .wt-sprite {
   display: inline-block;
-  /* background-image: url(../img/sprites/sprites.png); */
+  background-image: url(../public/img/sprites.png);
   background-repeat: no-repeat
 }
 
 .wt-sprite.-e-alarm {
-  background-position: -77px -76px;
-  width: 25px;
-  height: 28px
+  background-position: -75px -58px;
+  width: 30px;
+  height: 30px
 }
 
 .wt-sprite.-e-book {
-  background-position: 0 -109px;
-  width: 24px;
-  height: 29px
+  background-position: -123px -90px;
+  width: 50px;
+  height: 40px
 }
 
 .wt-sprite.-e-briefcase {
@@ -1003,9 +1023,9 @@ button:not(:disabled) {
 }
 
 .wt-sprite.-e-clutch {
-  background-position: -99px -38px;
-  width: 40px;
-  height: 36px
+  background-position: -101px -32px;
+  width: 35px;
+  height: 34px
 }
 
 .wt-sprite.-e-darts {
@@ -1016,37 +1036,37 @@ button:not(:disabled) {
 
 .wt-sprite.-e-diamond {
   background-position: -99px 0;
-  width: 44px;
-  height: 37px
+  width: 42px;
+  height: 32px
 }
 
 .wt-sprite.-e-key {
-  background-position: -48px 0;
+  background-position: -52px 0;
   width: 50px;
   height: 50px
 }
 
 .wt-sprite.-e-money {
-  background-position: 0 -76px;
+  background-position: 0 -91px;
   width: 47px;
   height: 32px
 }
 
 .wt-sprite.-e-moneybag {
-  background-position: -144px 0;
+  background-position: -140px 0;
   width: 32px;
-  height: 43px
+  height: 40px
 }
 
 .wt-sprite.-e-ok {
-  background-position: -144px -44px;
+  background-position: -138px -39px;
   width: 31px;
-  height: 40px
+  height: 42px
 }
 
 .wt-sprite.-wcard {
   background-position: 0 0;
-  width: 47px;
+  width: 52px;
   height: 75px
 }
 
@@ -2831,7 +2851,7 @@ a.wt-btn_rounded {
   right: -14.68%;
   bottom: -11.483%;
   opacity: .8;
-  /* background-image: url(/assets/img/demo/phone-shadow.png); */
+  /* background-image: url(../public/img/phone-shadow.png); */
   -webkit-background-size: contain;
   -moz-background-size: contain;
   background-size: contain;
@@ -2842,7 +2862,7 @@ a.wt-btn_rounded {
   position: relative;
   width: 212.55px;
   height: 447.2px;
-  /* background-image: url(/assets/img/demo/phone.png); */
+  /* background-image: url(../public/img/phone2.png); */
   -webkit-background-size: cover;
   -moz-background-size: cover;
   background-size: cover
@@ -2859,7 +2879,7 @@ a.wt-btn_rounded {
 (min-width:768px) and (-o-min-device-pixel-ratio:2/1),
 (min-width:768px) and (min-resolution:192dpi) {
   .wt-phone-case {
-    /* background-image: url(/assets/img/demo/phone@2x.png) */
+    /* background-image: url(../public/img/phone@2x.png) */
   }
 }
 
@@ -2907,14 +2927,14 @@ a.wt-btn_rounded {
   }
 }
 
-.wt-phone-screen-video {
+/* .wt-phone-screen-video {
   height: 100%;
   width: 100%;
   line-height: 0;
   contain: content
-}
+} */
 
-.wt-phone-screen-video video {
+/* .wt-phone-screen-video video {
   height: 100%;
   width: 100%
 }
@@ -2925,7 +2945,7 @@ a.wt-btn_rounded {
   -ms-transform: scale(1.011);
   -o-transform: scale(1.011);
   transform: scale(1.011)
-}
+} */
 
 .wt-phone-screen-img {
   height: 100%;
@@ -3556,7 +3576,7 @@ a.wt-btn_rounded {
   width: 170px;
   height: 267px;
   margin: 0 0 0 -85px;
-  /* background-image: url(/assets/img/demo/wcard-xs.png); */
+  /* background-image: url(../public/img/wcard-xs.png); */
   -webkit-background-size: 170px 267px;
   -moz-background-size: 170px 267px;
   background-size: 170px 267px;
@@ -3576,7 +3596,7 @@ a.wt-btn_rounded {
 (-o-min-device-pixel-ratio:2/1),
 (min-resolution:192dpi) {
   .wt-hero-card {
-    /* background-image: url(/assets/img/demo/wcard-xs@2x.png) */
+    /* background-image: url(../public/img/wcard-xs@2x.png) */
   }
 }
 
@@ -3586,7 +3606,7 @@ a.wt-btn_rounded {
     width: 220px;
     height: 345px;
     margin: 0 0 0 -110px;
-    /* background-image: url(/assets/img/demo/wcard-sm.png); */
+    /* background-image: url(../public/img/wcard-sm.png); */
     -webkit-background-size: 220px 345px;
     -moz-background-size: 220px 345px;
     background-size: 220px 345px
@@ -3597,7 +3617,7 @@ a.wt-btn_rounded {
 (min-width:768px) and (-o-min-device-pixel-ratio:2/1),
 (min-width:768px) and (min-resolution:192dpi) {
   .wt-hero-card {
-    /* background-image: url(/assets/img/demo/wcard-sm@2x.png) */
+    /* background-image: url(../public/img/wcard-sm@2x.png) */
   }
 }
 
@@ -3607,7 +3627,7 @@ a.wt-btn_rounded {
     width: 260px;
     height: 408px;
     margin: 0 0 0 -130px;
-    /* background-image: url(/assets/img/demo/wcard.png); */
+    /* background-image: url(../public/img/wcard.png); */
     -webkit-background-size: 260px 408px;
     -moz-background-size: 260px 408px;
     background-size: 260px 408px
@@ -3618,7 +3638,7 @@ a.wt-btn_rounded {
 (min-width:1600px) and (-o-min-device-pixel-ratio:2/1),
 (min-width:1600px) and (min-resolution:192dpi) {
   .wt-hero-card {
-    /* background-image: url(/assets/img/demo/wcard@2x.png) */
+    /* background-image: url(../public/img/wcard@2x.png) */
   }
 }
 

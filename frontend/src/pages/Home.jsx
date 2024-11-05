@@ -43,14 +43,6 @@ const Home = ({ setUser }) => {
         </div>
       </div>
     </div>
-
-    // <div>
-    //     <Link to="/join">회원가입</Link> <br />
-    //     <Link to="/login">login</Link> 
-    //     <Link to='/measurement'>체형측정</Link>
-
-    //     <button onClick={logout}>로그아웃</button>
-    // </div>
   )
 }
 

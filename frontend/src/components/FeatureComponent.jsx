@@ -50,7 +50,7 @@ const FeatureComponent = () => {
                             in2="warp"></feDisplacementMap>
                         </filter>
                       </defs>
-                      <image xlinkHref="/assets/img/screens/1@2x.png" style={{ filter: 'url(#feaute-demo-filter-1)' }}
+                      <image xlinkHref="/img/feature1.png" style={{ filter: 'url(#feaute-demo-filter-1)' }}
                         width="463" height="463" x="0" y="0"></image>
                     </svg>
                   </div>
@@ -64,7 +64,7 @@ const FeatureComponent = () => {
                             in2="warp"></feDisplacementMap>
                         </filter>
                       </defs>
-                      <image xlinkHref="/assets/img/screens/2@2x.png" style={{ filter: 'url(#feaute-demo-filter-2)' }}
+                      <image xlinkHref="/img/feature2.png" style={{ filter: 'url(#feaute-demo-filter-2)' }}
                         width="463" height="463" x="0" y="0"></image>
                     </svg>
                   </div>
@@ -78,7 +78,7 @@ const FeatureComponent = () => {
                             in2="warp"></feDisplacementMap>
                         </filter>
                       </defs>
-                      <image xlinkHref="/assets/img/screens/3@2x.png" style={{ filter: 'url(#feaute-demo-filter-3)' }}
+                      <image xlinkHref="/img/feature5.png" style={{ filter: 'url(#feaute-demo-filter-3)' }}
                         width="463" height="463" x="0" y="0"></image>
                     </svg>
                   </div>
@@ -87,16 +87,16 @@ const FeatureComponent = () => {
               <div className="wt-feature-grid-col -right">
                 <div className="wt-feature-items" role="list">
                   <div className="wt-feature-item -active" role="listitem">
-                    Real-time alerts <s className="wt-sprite -e-alarm"></s>
-                    next day settlement
+                    측정을 원하는 <s className="wt-sprite -e-alarm"></s>
+                    사진을 골라 업로드하세요
                   </div>
                   <div className="wt-feature-item" role="listitem">
-                    Flexible billing <s className="wt-sprite -e-book"></s>
-                    and payments
+                    업로드된 사진을 <s className="wt-sprite -e-book"></s>
+                    3D 인체 모델링으로 만듭니다
                   </div>
                   <div className="wt-feature-item" role="listitem">
-                    Banking for all <s className="wt-sprite -e-darts"></s>
-                    personal, business
+                    히트맵으로 사이즈를 더<s className="wt-sprite -wcard"></s>
+                    정확하게 확인하세요
                   </div>
                 </div>
               </div>

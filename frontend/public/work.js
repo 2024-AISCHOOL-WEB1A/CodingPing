@@ -14919,13 +14919,10 @@
         var n = this
           , s = t.view
           , a = s.find(".wt-hero");
-        t.navbarLogo.on("click", function (e) {
-          e.preventDefault(),
-            e.stopPropagation(),
-            t.scrollTo("header", {
-              duration: 1200
-            })
-        }),
+          // 로고를 누를 때 슬라이드 효과를 제거하고 페이지 이동 기능
+          t.navbarLogo.on("click", function (e) {
+            window.location.href = "/";
+        });
           s.find(".wt-particle").each(function () {
             var e = (0,
               i.default)(this)

@@ -45,7 +45,7 @@ const Main = () => {
                 {/* 메인페이지에 스크롤 다운하면 글씨가 변경되는 부분 */}
                 <h1>
                   Wear <br />
-                  <span data-textset='["accurate ", "Easy", "Fun", "Comfort"]'>accurate</span>
+                  <span data-textset='["Accurate", "Easy", "Fun", "CloOn"]'>Accurate</span>
                 </h1>
               </div>
             </div>

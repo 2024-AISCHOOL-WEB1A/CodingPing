@@ -10,7 +10,7 @@ const EndComponent = () => {
           <div className="wt-getapp-container">
             <div className="wt-getapp-header" data-cursor="-exclusion">
               <h2>
-                Download the app <br />to get started
+                CloOn <br />시작해보세요!
               </h2>
             </div>
             <div className="wt-getapp-store">
@@ -24,19 +24,6 @@ const EndComponent = () => {
                   <span className="wt-btn_store-title">
                     Soon on <br />
                     <b>App Store</b>
-                  </span>
-                </button>
-              </div>
-              <div className="wt-getapp-store-item">
-                <button className="wt-btn wt-btn_store -gplay" disabled>
-                  <span className="wt-btn_store-ico">
-                    <svg className="wt-svgsprite -gplay-c">
-                      <use xlinkHref="/assets/img/sprites/svgsprites.svg#gplay-c"></use>
-                    </svg>
-                  </span>
-                  <span className="wt-btn_store-title">
-                    Soon on <br />
-                    <b>Google Play</b>
                   </span>
                 </button>
               </div>

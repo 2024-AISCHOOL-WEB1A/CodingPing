@@ -8,6 +8,7 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Measurement from './pages/Measurement';
 import Header from './components/Header';
+import Mypage from './pages/Mypage';
 
 function App() {
 	const location = useLocation();
@@ -98,6 +99,7 @@ function App() {
 				<Route path='/join' element={<Join />} />
 				<Route path='/login' element={<Login setUser={setUser} />} />
 				<Route path='/measurement' element={<Measurement />} />
+        <Route path='/mypage' element={<Mypage setUser={setUser}/>}/>
 				</Routes>
 			</div>
 		</div>
