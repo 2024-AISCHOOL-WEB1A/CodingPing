@@ -3,24 +3,24 @@ import { Link } from 'react-router-dom'
 import instance from '../axios';
 
 const Header = ({ user, setUser }) => {
-	// sessionStorage에서 직접 로그인 상태 확인
-	const isLoggedIn = () => {
-		const sessionInfo = sessionStorage.getItem("info");
-		if (sessionInfo) {
-			const info = JSON.parse(sessionInfo);
-			return info.auth === "user" && info.user_id;
-		}
-		return false;
-	}
+  // sessionStorage에서 직접 로그인 상태 확인
+  const isLoggedIn = () => {
+    const sessionInfo = sessionStorage.getItem("info");
+    if (sessionInfo) {
+      const info = JSON.parse(sessionInfo);
+      return info.auth === "user" && info.user_id;
+    }
+    return false;
+  }
 
-	// 로그아웃 함수
-	const logout = async () => {
-		console.log("로그아웃 함수");
-		const res = await instance.get("/logout");
-		console.log("logout res :", res.data);
+  // 로그아웃 함수
+  const logout = async () => {
+    console.log("로그아웃 함수");
+    const res = await instance.get("/logout");
+    console.log("logout res :", res.data);
 
-		// sessionStorage 값 지우기
-		sessionStorage.removeItem("info");
+    // sessionStorage 값 지우기
+    sessionStorage.removeItem("info");
 
     setUser("");
     alert("다음에 또 방문해주세요 ~!");
@@ -35,8 +35,8 @@ const Header = ({ user, setUser }) => {
             <div className="wt-navbar-grid-col -left">
               <div className="wt-navbar-logo" data-magnetic data-cursor="-normal">
                 {/* 로고부분 */}
-                <a href="/" aria-label="Wickret">
-                  <img src="/img/logo.png" srcSet="/img/logo@2x.png 2x" alt="" />
+                <a href="/" aria-label="CloOn">
+                  <img src="/img/logo1.png" srcSet="/img/logo@2x.png 2x" alt="" />
                 </a>
               </div>
             </div>
@@ -90,11 +90,27 @@ const Header = ({ user, setUser }) => {
                 )}
               </div>
               <div className="wt-navbar-sign">
-                <button className="wt-btn wt-btn_sign" data-section-target="try" data-cursor="-default">
-                  <span className="wt-btn_sign-bound">
-                    <span data-width="#fff" data-text="Try">Try</span>
-                  </span>
-                </button>
+                {!isLoggedIn() ? (
+                  <Link
+                    to="/join"
+                    className="wt-btn wt-btn_sign"
+                    data-cursor="-default"
+                  >
+                    <span className="wt-btn_sign-bound">
+                      <span data-width="#fff" data-text="Try">Try</span>
+                    </span>
+                  </Link>
+                ) : (
+                  <Link
+                    to="/measurement"
+                    className="wt-btn wt-btn_sign"
+                    data-cursor="-default"
+                  >
+                    <span className="wt-btn_sign-bound">
+                      <span data-width="#fff" data-text="Try">Try</span>
+                    </span>
+                  </Link>
+                )}
               </div>
               <div className="wt-navbar-toggle">
                 <button className="wt-btn wt-btn_menu" aria-label="Menu">
@@ -112,12 +128,12 @@ const Header = ({ user, setUser }) => {
         <div className="wt-navbar-menu-content">
           <div className="wt-navbar-menu-container">
             <div className="wt-navbar-menu-nav" role="navigation">
-              <a className="wt-navbar-menu-nav-item" href="" data-section-target="join">
+              <Link className="wt-navbar-menu-nav-item" to="/join">
                 <span>Join</span>
-              </a>
-              <a className="wt-navbar-menu-nav-item" href="" data-section-target="login">
+              </Link>
+              <Link className="wt-navbar-menu-nav-item" to="/login">
                 <span>Login</span>
-              </a>
+              </Link>
             </div>
           </div>
         </div>

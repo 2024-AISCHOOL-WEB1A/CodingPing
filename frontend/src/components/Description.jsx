@@ -17,17 +17,10 @@ const Description = () => {
                 </div>
                 <div className="wt-description-grid-col -right">
                   <div className="wt-description-header" data-cursor="-exclusion">
-                    <h2>Get Paid early</h2>
+                    <h2>쇼핑을 더욱 쉽고 편하게 </h2>
                   </div>
                   <div className="wt-description-text">
-                    <p>Your paycheck will be automatically deposited up to two days early</p>
-                  </div>
-                  <div className="wt-description-action">
-                    <button className="wt-btn wt-btn_rounded -transparent" data-section-target="getapp" type="button">
-                      <span className="wt-btn_rounded-bound">
-                        <span data-text="Download">Download</span>
-                      </span>
-                    </button>
+                    <p>그 동안 헷갈렸던 사이즈에 대한 고민을 줄여드리겠습니다 </p>
                   </div>
                 </div>
               </div>
@@ -49,7 +42,7 @@ const Description = () => {
             <div className="wt-envelope-container">
               <div className="wt-envelope-header" data-cursor="-exclusion">
                 <h2>
-                  Customer Service<br />on Your Terms
+                  당신만의 완벽한 핏을<br />당신의 방식대로
                 </h2>
               </div>
             </div>

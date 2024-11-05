@@ -36,11 +36,11 @@ const Content = () => {
           <div className="wt-envelope-container">
             <div className="wt-envelope-header" data-cursor="-exclusion">
               <h2>
-                It's Your Money <br />Stop paying fees
+                당신만의 <br />완벽한 핏을 찾아드립니다.
               </h2>
             </div>
             <div className="wt-envelope-text">
-              <p>Fee Free Banking is possible</p>
+              <p>AI가 찾아주는 나만의 사이즈</p>
             </div>
           </div>
         </div>

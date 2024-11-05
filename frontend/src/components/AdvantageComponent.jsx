@@ -37,7 +37,7 @@ const AdvantageComponent = () => {
                 <div className="wt-advantage-header-shape-item -v3"></div>
               </div>
               <div className="wt-advantage-header-blend">
-                <h2>Security</h2>
+                <h2>AI Fitting</h2>
               </div>
             </div>
             <div className="wt-advantage-details">
@@ -45,16 +45,22 @@ const AdvantageComponent = () => {
                 <div className="wt-advantage-grid-col">
                   <div className="wt-advantage-text">
                     <p>
-                      <b>Superior Security.</b>
-                      Security and fraud prevention is at the core of our business.
+                      <b>Accuracy.</b>
+                      <br/>
+                      3D 체형 분석으로 당신만의 완벽한 핏을 
+                      <br/>
+                      찾아드립니다.
                     </p>
                   </div>
                 </div>
                 <div className="wt-advantage-grid-col">
                   <div className="wt-advantage-text">
                     <p>
-                      <b>Fraud Protection.</b>
-                      Our fraud tools can help your business minimize lost sales.
+                      <b>Privacy.</b>
+                      <br/>
+                      사용자의 프라이버시를 중시해 
+                      <br/>
+                      어떠한 개인정보도 저장하지 않습니다.
                     </p>
                   </div>
                 </div>
