@@ -44,8 +44,8 @@ const Measurement = () => {
 				// 요청 본문에 포함된 데이터의 형식을 지정
 				// multipart/form-data : 파일 업로드와 같은 복합 데이터 형식을 전송하기 위해 사용되는 콘텐츠 타입, 텍스트 필드와 파일 데이터를 모두 포함할 수 있도록 설계되어 있음.
 			});
-			console.log(res.data.image_path);
-			setImagePath(res.data.image_path);
+			console.log(res.data.data.image_path);
+			setImagePath(res.data.data.image_path);
 		} catch (err) {
 			console.log(err);
 		}
@@ -57,8 +57,7 @@ const Measurement = () => {
 			<div style={styles.formContainer}>
 				<div style={styles.silhouette}>
 					{imagePath && (
-						<img src={`http://localhost:3007/meshImage/${imagePath.split('/')[1]}`} alt="Uploaded" />
-						// <img src={`https://5955-114-110-128-38.ngrok-free.app/${imagePath}`} alt="Modeled" />
+						<img src={`http://localhost:3007/image/${imagePath}`} alt="Uploaded" />
 					)}
 				</div>
 				<form style={styles.form} onSubmit={handleSubmit}>

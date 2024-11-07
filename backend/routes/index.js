@@ -144,6 +144,23 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage: storage });
 
+
+// < 3D Mesh 이미지 업로드 라우트 및 신체 측정 라우트 >
+
+// 1. brew install ngrok/ngrok/ngrok 로 backend 폴더에 설치
+// 2. 기존의 터미널 창은 backend 폴더와 frontend 폴더만 열었다면, 터미널 하나를 더 열어준다 ! -> 즉, 터미널 화면을 3개를 띄운다는 점
+// 3. ngrok config add-authtoken YOUR_AUTHTOKEN -> YOUR_AUTHTOKEN 부분에 본인의 ngrok 토큰을 작성한다. (우리팀은 준호형 토큰으로)
+// 3. 새로 연 터미널 창에서 backend 폴더로 진입 후 터미널 창에 "ngrok http 3007" 을 입력한다.
+// 4. Forwarding 옆에 출력된 url 주소를 FastAPI 서버의 main.py 에 복붙을 한다.
+router.post('/upload', upload.single('file'), (req, res) => {
+    const tempPath = req.file.path;
+    const targetPath = path.join(__dirname, '..', 'image', req.file.originalname);
+    fs.rename(tempPath, targetPath, err => {
+        if (err) return res.status(500).json({ message: "Failed to save image" });
+        res.status(200).json({ message: "Image uploaded successfully", path: targetPath });
+    });
+});
+
 router.post("/measurement", upload.single("image"), async (req, res) => {
     const { gender, height, weight } = req.body;
     const file = req.file;  // multer 로 업로드된 이미지 경로를 imagePath 변수에 저장
@@ -151,7 +168,6 @@ router.post("/measurement", upload.single("image"), async (req, res) => {
     try {
         console.log("체형 측정 Router 작동 :", gender, height, weight, file.path);
         console.log("req.file : ", file);
-        // res.json({ imagePath: imagePath });
 
         // FastAPI 서버로 전송할 폼 데이터 생성
         const formData = new FormData();
@@ -164,81 +180,29 @@ router.post("/measurement", upload.single("image"), async (req, res) => {
         // console.log("서버 응답:", testResponse.status);
 
         // FastAPI 서버에 이미지와 폼 데이터를 POST 요청으로 전송
-        const url = "https://5955-114-110-128-38.ngrok-free.app/predict";  // 수시로 바뀜
-        const response = await axios.post(url, formData, {
+        const url = "https://9a16-114-110-128-38.ngrok-free.app";  // 수시로 바뀜
+        const response = await axios.post(`${url}/predict`, formData, {
             // headers: {
             //     ...formData.getHeaders(), // FormData 의 기본 헤더 설정
             //     "Accept": "application/json"  // JSON 응답을 받기 위한 헤더 설정 -> 명시적으로 JSON 형식의 응답을 요청하는 구문
             //     // 꼭 사용하지 않아도 되지만, 그럴 경우 FastAPI 서버가 JSON 으로 응답하지 않고 다른 형식으로 응답을 한다면 JSON 파싱 오류가 발생할 수 있음.
             // }
-            headers: formData.getHeaders()
+            headers: formData.getHeaders(),
+            maxBodyLength: Infinity
         });
 
-        console.log("측정 라우터에서 모델로 response data : ", response.data);
+        console.log("FastAPI서버에서 받은 response data : ", response.data);
 
-        // res.json(response.data);
-
-        // FastAPI로부터 반환된 새 이미지 경로를 구조 분해 할당
-        // imagePath: 모델링된 새 이미지 경로
-        // modelResults: 기타 모델링 결과 데이터 (어깨 너비, 가슴 둘레 등)
-        // const { imagePath, ...modelResults } = response.data;
-
-
-        const saveMeshImage = (imagePath, saveFolderPath) => {
-            // 파일명 추출
-            const fileName = path.basename(imagePath);
-            const savePath = path.join(saveFolderPath, fileName);
-
-            // 폴더가 없으면 생성
-            if (!fs.existsSync(saveFolderPath)) {
-                fs.mkdirSync(saveFolderPath, { recursive: true });
-            }
-
-            // 파일 복사
-            fs.copyFile(imagePath, savePath, (err) => {
-                if (err) {
-                    console.error(`Error copying image: ${err}`);
-                } else {
-                    console.log(`Image copied to ${savePath}`);
-                }
-            });
-        }
-
-        const imagePath = response_data.image_path;
-        const saveFolderPath = path.join(__dirname, "..", 'meshImage');
-
-        copyImageToMeshFolder(imagePath, saveFolderPath);
-
-        // newImagePath 를 포함한 모델링을 통해서 나온 사용자의 신체 정보를 DB 에 저장하는 코드 작성하기
-        // const sql = "INSERT INTO body_tb (user_id, height, weight, 모델링 결과 값들 .., img) VALUES (?, ?, ?, ? ..., ?)";
-        // conn.query(sql, [
-        //     req.session.userId,  // 현재 로그인한 사용자의 ID
-        //     newImagePath,  // 모델링된 이미지 경로
-        //     height,
-        //     weight,
-        //     // 등 ..
-        // ], (err, rows) => {
-        //     if (err) {  // 모델링 된 결과를 DB 에 저장 실패했을 시 에러 처리
-        //         console.log("DB 저장 실패 : ", err);
-        //         return res.status(500).json({ error: "Database error" });
-        //     } else {  // DB 에 저장 성공 시 클라이언트에 성공 응답 전송
-        //         res.json({
-        //             success: true,
-        //             imagePath: newImagePath,
-        //             ...modelResults
-        //         });
-        //     }
-        // });
-
-
-        // res.json({ imagePath: newImagePath });  // 새 이미지 경로를 JSON 형태로 클라이언트에 응답
+        // FastAPI 서버로 전송된 이미지 경로를 React 서버에 전달 
+        res.json({ message: "Image processed by FastAPI server", data: response.data });
 
     } catch (err) {
         console.error("상세 에러 정보:", {
             message: err.message,
             code: err.code,
             url: err.config?.url,
-            method: err.config?.method
+            method: err.config?.method,
+            response: err.response?.data
         });
         res.status(500).json({ error: "서버 연결 실패", details: err.message });
     }

@@ -42,6 +42,13 @@ app.use(session({
 
 app.use("/", indexRouter);
 
+// 추가: /upload 경로 라우트 설정 
+const uploadRouter = require("../backend/routes/index"); 
+app.use("/upload", uploadRouter);
+
+// 3D Mesh 이미지가 저장된 'image' 폴더를 정적 파일 경로로 설정
+app.use("/image", express.static("image"));
+
 
 app.set("port", process.env.PORT || 3007)
 app.listen(app.get("port"), () => {
