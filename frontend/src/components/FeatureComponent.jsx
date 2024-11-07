@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap'; // gsap 설치해야됨
 
-const FeatureComponent = () => {
+const FeatureComponent = ({setUser}) => {
   const componentRef = useRef(null);
 
   useEffect(() => {
@@ -87,16 +87,19 @@ const FeatureComponent = () => {
               <div className="wt-feature-grid-col -right">
                 <div className="wt-feature-items" role="list">
                   <div className="wt-feature-item -active" role="listitem">
-                    측정을 원하는 <s className="wt-sprite -e-alarm"></s>
+                    측정을 원하는 <br/>
+                    {/*<s className="wt-sprite -e-alarm"></s> */}
                     사진을 골라 업로드하세요
                   </div>
                   <div className="wt-feature-item" role="listitem">
-                    업로드된 사진을 <s className="wt-sprite -e-book"></s>
+                    업로드된 사진을 <br/>
+                    {/* <s className="wt-sprite -e-book"></s> */}
                     3D 인체 모델링으로 만듭니다
                   </div>
                   <div className="wt-feature-item" role="listitem">
-                    히트맵으로 사이즈를 더<s className="wt-sprite -wcard"></s>
-                    정확하게 확인하세요
+                    히트맵으로 사이즈를  <br/>
+                    {/* <s className="wt-sprite -wcard"></s> */}
+                    더 정확하게 확인하세요
                   </div>
                 </div>
               </div>

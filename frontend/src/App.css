@@ -411,6 +411,163 @@ html, body {
 }
 /* 끝 */
 
+/* 마이페이지 css 시작 */
+.body-container {
+  min-height: calc(100vh - 100px);
+  margin: 96px 88px 20px 88px;
+  background-color: #f6f6f6;
+  border: 1px solid #e0e0e0;
+  border-radius: 5%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.content-wrapper {
+  position: relative;
+  display: flex;
+  width: 100%;
+  padding: 2rem;
+  gap: 3rem;
+  align-items: flex-start;
+}
+
+/* .body-section {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding-right: 15rem;
+} */
+
+.body-section img {
+  width: auto;
+  object-fit: contain;
+}
+
+/* .stats-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 1rem;
+  align-self: flex-end;
+  padding-right: 20;
+} */
+
+.stats-section {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  left: 25.2%; /* 인체 실루엣 바로 오른쪽에 위치 */
+  top: 70%; /* 실루엣의 하단부에 맞춤 */
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.value {
+  font-size: 2rem;
+  color: #005ffe;
+  font-weight: bold;
+}
+
+.value span {
+  font-size: 1rem;
+  color: #005ffe;
+  margin-left: 0.25rem;
+}
+
+.label {
+  color: #005ffe;
+  font-size: 0.9rem;
+}
+
+/* 테이블 텍스트 관련 스타일 추가 */
+.table-section table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+}
+
+.table-section td {
+  height: 96px;
+  padding: 0.5rem;
+  text-align: center;
+  vertical-align: middle;
+  border-right: 2px solid #005ffe;
+  border-bottom: 2px solid #005ffe;
+  transition: background-color 0.2s;
+}
+
+.table-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* 환영 텍스트 스타일 */
+.welcome-text {
+  color: #005ffe;
+  font-size: 4rem;
+  font-weight: bold;
+  margin: 0;
+  margin-bottom: 1rem;
+}
+
+/* 첫 번째 열에만 왼쪽 테두리 추가 */
+td:first-child {
+  border-left: 2px solid #005ffe;
+}
+
+/* 첫 번째 행에만 위쪽 테두리 추가 */
+tr:first-child td {
+  border-top: 2px solid #005ffe;
+}
+
+/* 테이블 모서리 radius 설정 */
+tr:first-child td:first-child {
+  border-top-left-radius: 10px;
+}
+
+tr:first-child td:last-child {
+  border-top-right-radius: 10px;
+}
+
+tr:last-child td:first-child {
+  border-bottom-left-radius: 10px;
+}
+
+tr:last-child td:last-child {
+  border-bottom-right-radius: 10px;
+}
+
+.table-cell-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  color: #1a237e;
+  font-size: 0.9rem;
+}
+
+tr:first-child .table-cell-content {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.table-section td:hover {
+  background-color: rgba(26, 35, 126, 0.1);
+}
+
+/* 마이페이지 css 끝 */
+
 /*! normalize.css v7.0.0 | MIT License | github.com/necolas/normalize.css */
 html {
   line-height: 1.15;

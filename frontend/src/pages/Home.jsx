@@ -6,9 +6,9 @@ import FeatureComponent from '../components/FeatureComponent';
 import AdvantageComponent from '../components/AdvantageComponent';
 import Description from '../components/Description'
 import Envelope from '../components/Envelope'
-import EndComponet from '../components/EndComponent'
+import EndComponent from '../components/EndComponent'
 
-const Home = ({ setUser }) => {
+const Home = ({ user, setUser }) => {
 
   // 로그아웃 함수
   const logout = async () => {
@@ -39,7 +39,7 @@ const Home = ({ setUser }) => {
           <AdvantageComponent/>
           <Description/>
           <Envelope/>
-          <EndComponet/>
+          <EndComponent user={user} setUser={setUser}/>
         </div>
       </div>
     </div>
