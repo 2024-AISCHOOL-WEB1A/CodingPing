@@ -1,55 +1,47 @@
 const express = require("express")
-const app = express()
+const path = require("path")
+const cors = require("cors")
+const session = require("express-session")
+const fileStore = require("session-file-store")(session)
 
-const indexRouter = require("./routes")
+const app = express()
+const indexRouter = require("./routes")  // 기본 라우터 (index.js) 불러오기
+const measurementRouter = require("./routes/measurement");  // 3D Mesh 이미지를 위한 라우터 불러오기
 // routes 폴더 안에 파일 이름이 index 인 경우는 경로를 작성할 때 생략이 가능하나,
 // 파일 이름이 다른 경우에는 정확하게 작성해줘야 한다.
 // ex) ./routes/user
 
+// < 정적인 파일 경로 설정 >
+app.use(express.static(path.join(__dirname, "..", "frontend", "build")))  // 프론트엔드 빌드 파일 제공
+app.use('/uploads', express.static('upload'))  // 사용자가 본인의 사진을 업로드해서 저장된 "upload" 폴더를 "/uploads" 경로로 설정
+app.use("/image", express.static("image"));  // 3D Mesh 이미지가 저장된 'image' 폴더를 "/image" 경로로 설정
 
-// 정적인 파일을 가져오기 위한 세팅
-const path = require("path")
-app.use(express.static(path.join(__dirname, "..", "frontend", "build")))
-
-// CORS 오류 처리를 위한 모듈 가져오기
-const cors = require("cors")
+// < CORS 오류 처리를 위한 모듈 가져오기 및 JSON 파싱 미들웨어 >
 app.use(cors())
 app.use(express.json())
-app.use(express.urlencoded({ extended: false }))
+app.use(express.urlencoded({ extended: false }))  // URL-encoded 데이터 파싱 (확장 기능 비활성화)
 
-// 이미지가 저장된 'upload' 폴더를 정적 파일 경로로 설정
-app.use('/uploads', express.static('upload'))
-
-// 세션 설정
-const session = require("express-session")
-const fileStore = require("session-file-store")(session)
-
+// < 세션 설정 >
 let fileStoreOptions = {
-    path: "./sessions",  // 세션 파일 저장 경로
-    reapInterval: 10  // 세션 정리 주기 
+    path: "./sessions",  // 세션 파일 저장 경로를 "./sessions" 로 설정
+    reapInterval: 10  // 세션 정리 주기를 10초로 설정
 }
 
-// 세션 미들웨어 설정
+//  - 세션 미들웨어 설정
 app.use(session({
     httpOnly: true,  // http 를 통해서만 세션에 접근
     resave: false,  // 세션을 항상 재저장하지 않도록
-    secret: "ais",  // 세션 암호화
-    saveUninitialized: false,  // 초기화 되지 않은 세션이 저장하지 않도록
-    store: new fileStore(fileStoreOptions),
+    secret: "ais",  // 세션 암호화를 위한 비밀 키
+    saveUninitialized: false,  // 초기화 되지 않은 세션을 저장하지 않음
+    store: new fileStore(fileStoreOptions),  // 파일 스토어를 이용해 세션 저장
     cookie: { maxAge: 360000 }  // 쿠키의 유효기간 
 }))
 
+// < 라우터 설정 >
+app.use("/", indexRouter);  // 기본 경로 ("/") 요청을 indexRouter 로 처리
+app.use("/measurement", measurementRouter);  // "/measurement" 경로 요청을 uploadRouter 로 처리
 
-app.use("/", indexRouter);
-
-// 추가: /upload 경로 라우트 설정 
-const uploadRouter = require("../backend/routes/index"); 
-app.use("/upload", uploadRouter);
-
-// 3D Mesh 이미지가 저장된 'image' 폴더를 정적 파일 경로로 설정
-app.use("/image", express.static("image"));
-
-
+// < 서버 포트 설정 및 시작 >
 app.set("port", process.env.PORT || 3007)
 app.listen(app.get("port"), () => {
     console.log(`Server is running on ${app.get("port")}`);
