@@ -1,6 +1,26 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
 
-const EndComponent = () => {
+const EndComponent = ({user, setUser}) => {
+  const navigate = useNavigate();
+
+  const isLoggedIn = () => {
+    const sessionInfo = sessionStorage.getItem("info");
+    if (sessionInfo) {
+      const info = JSON.parse(sessionInfo);
+      return info.auth === "user" && info.user_id;
+    }
+    return false;
+  }
+
+  const handleButtonClick = () => {
+    if (isLoggedIn()) {
+      navigate('/measurement');
+    } else {
+      navigate('/join');
+    }
+  }
+
   return (
     <section className="wt-getapp" id="section-getapp">
       <div className="wt-getapp-fill"></div>
@@ -15,30 +35,24 @@ const EndComponent = () => {
             </div>
             <div className="wt-getapp-store">
               <div className="wt-getapp-store-item">
-                <button className="wt-btn wt-btn_store -apple" disabled>
+                <button 
+                  className="wt-btn wt-btn_store -apple"
+                  onClick={handleButtonClick}
+                >
                   <span className="wt-btn_store-ico">
                     <svg className="wt-svgsprite -apple">
                       <use xlinkHref="/assets/img/sprites/svgsprites.svg#apple"></use>
                     </svg>
                   </span>
                   <span className="wt-btn_store-title">
-                    Soon on <br />
-                    <b>App Store</b>
+                    CloOn <br/> 
+                    {isLoggedIn() ? "측정 시작하기" : "회원가입하기"}
                   </span>
                 </button>
               </div>
             </div>
           </div>
         </div>
-        {/* <div className="wt-getapp-footer">
-          <div className="wt-getapp-footer-container">
-            <a className="wt-getapp-dev" href="//cuberto.com" target="_blank"
-              aria-label="Design & Development by Cuberto" rel="noopener">
-              <img src="/assets/img/cuberto.png" srcSet="/assets/img/cuberto@2x.png 2x" alt="" />
-              <span>Design & Development</span>
-            </a>
-          </div>
-        </div> */}
       </div>
     </section>
   );
