@@ -9,6 +9,7 @@ import Login from './pages/Login';
 import Measurement from './pages/Measurement';
 import Header from './components/Header';
 import Mypage from './pages/Mypage';
+import Clothes from './pages/Clothes';
 
 function App() {
   const location = useLocation();
@@ -100,6 +101,7 @@ function App() {
           <Route path='/login' element={<Login setUser={setUser} />} />
           <Route path='/measurement' element={<Measurement />} />
           <Route path='/mypage' element={<Mypage setUser={setUser} />} />
+          <Route path='/clothes' element={<Clothes/>}></Route>
         </Routes>
       </div>
     </div>
