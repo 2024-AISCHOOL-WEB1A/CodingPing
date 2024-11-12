@@ -79,7 +79,7 @@ router.post("/", upload.single("image"), async (req, res) => {
         formData.append('file', fs.createReadStream(file.path), file.originalname);  // 업로드된 이미지를 파일 스트림으로 추가
 
         // FastAPI 서버 URL (ngrok URL 이므로 수시로 바뀔 수 있음)
-        const url = "https://439f-114-110-128-38.ngrok-free.app";
+        const url = "https://70d7-114-110-128-38.ngrok-free.app";
         const response = await axios.post(`${url}/predict`, formData, {
             headers: formData.getHeaders(),
             maxBodyLength: Infinity  // Body 길이 무제한 설정 (대용량 데이터 전송을 위한 설정)
@@ -88,6 +88,39 @@ router.post("/", upload.single("image"), async (req, res) => {
         console.log("FastAPI서버에서 받은 response data : ", response.data); 
         res.json({ message: "Image processed by FastAPI server", data: response.data });  // FastAPI 서버로 전송된 이미지 경로를 React 서버에 전달
 
+        // // 모델링을 통해서 나온 사용자의 신체 정보를 DB 에 저장
+        // const sql = "INSERT INTO body_tb\
+        //                 (\
+        //                     user_id, height, weight, \
+        //                     chest_circ, waist_circ, hip_circ, \
+        //                     arm_length, forearm_length, upper_body_length, thigh_length, leg_length, \
+        //                     shoulder_width, waist_width, chest_width, img\
+        //                 )\
+        //                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        // conn.query(sql, [
+        //     req.session.userId,  // 현재 로그인한 사용자의 ID
+        //     height,
+        //     weight,
+        //     chest_circ,  // 가슴 둘레 (response.data.~~ 로 바꿔줘야 함).
+        //     waist_circ,  // 허리 둘레
+        //     hip_circ,  // 엉덩이 둘레
+        //     arm_length,  // 팔 길이
+        //     forearm_length,  // 팔뚝 길이
+        //     upper_body_length,  // 상체 길이
+        //     thigh_length,  // 허벅지 길이
+        //     leg_length,  // 다리 길이
+        //     shoulder_width,  // 어깨 너비
+        //     waist_width,  // 허리 너비
+        //     chest_width,  // 가슴 너비
+        //     response.data.image_path,  // image 폴더에 저장된 사용자의 3D Mesh 이미지파일 이름
+        // ], (err, rows) => {
+        //     if (err) {  // 모델링 된 결과를 DB 에 저장 실패했을 시 에러 처리
+        //         console.log("DB 저장 실패 : ", err);
+        //         return res.status(500).json({ error: "Database error" });
+        //     } else {  // DB 에 저장 성공 시 클라이언트에 성공 응답 전송
+        //         console.log("체형 측정 값 DB 저장 성공 !!");
+        //     }
+        // });
     } catch (err) {
         console.error("상세 에러 정보:", {
             message: err.message,
@@ -112,6 +145,41 @@ router.post('/meshImageSave', upload.single('file'), (req, res) => {
         if (err) return res.status(500).json({ message: "Failed to save image" });
         res.status(200).json({ message: "Image uploaded successfully", path: targetPath });
     });
+});
+
+
+// ** < GET /mypage 요청 라우트 > **
+// body_tb 테이블에서 신체 측정 정보를 가져온 후 JSON 형식으로 Mypage.jsx 에 전달
+router.get("/mypage", async (req, res) => {
+    try {
+        const userId = req.query.user_id;
+        console.log("userId : ", userId);
+        if (!userId) {
+            return res.status(400).json({ error: "userId가 필요합니다." });
+        }
+
+        // body_tb 테이블에서 데이터를 가져오는 sql 쿼리문
+        const sql = `
+                        SELECT height, weight, chest_circ, waist_circ, hip_circ, 
+                               arm_length, forearm_length, upper_body_length, thigh_length, leg_length,
+                               shoulder_width, waist_width, chest_width, measurement_date 
+                        FROM body_measurement
+                        WHERE user_id = ?
+                        ORDER BY measurement_date DESC
+                        LIMIT 3
+                    `;
+        conn.query(sql, [userId], (err, rows) => {
+            if (err) {
+                console.log("DB 에서 값 불러오기 실패 .. : ", err);
+            } else {
+                console.log("DB 에서 값 가져오기 성공 !");
+                res.json({ measurements: rows });
+            }
+        });
+    } catch (err) {
+        console.error("데이터 가져오기 오류 :", err);
+        res.status(500).json({ error: "데이터를 가져오는 중 오류가 발생했습니다." });
+    }
 });
 
 
