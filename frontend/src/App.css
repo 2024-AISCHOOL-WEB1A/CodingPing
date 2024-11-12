@@ -568,6 +568,201 @@ tr:first-child .table-cell-content {
 
 /* 마이페이지 css 끝 */
 
+/* Clothes.css */
+.clothes-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 120px 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Category Grid Styles */
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 2rem;
+  margin-bottom: 2rem;
+  width: 100%;
+  max-width: 1200px;
+}
+
+@media (max-width: 1024px) {
+  .category-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .category-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.category-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.category-card {
+  width: 100%;
+  background-color: white;
+  border-radius: 30px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.category-image {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+}
+
+.category-title {
+  margin-top: 0.75rem;
+  text-align: center;
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: #0066FF;
+}
+
+/* Form Styles */
+.form-container {
+  width: 100%;
+  max-width: 600px;
+  height: 0;
+  overflow: hidden;
+  transition: height 0.5s ease-in-out;
+  margin-top: 2rem;
+}
+
+.form-container.visible {
+  height: 500px; /* 폼의 실제 높이에 맞게 조정 */
+}
+
+.form-card {
+  border: 2px solid black;
+  border-radius: 0.5rem;
+  padding: 1rem;
+  background: white;
+  transform: translateY(-100%);
+  transition: transform 0.5s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-card.slide-down {
+  transform: translateY(0);
+}
+
+.form-title {
+  text-align: center;
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  color: #0066FF;
+}
+
+.measurement-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.form-field {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 0.75rem;
+}
+
+.field-label {
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: #0066FF;
+}
+
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.measurement-input {
+  width: 8rem;
+  padding: 0.5rem;
+  border: 2px solid black;
+  border-radius: 0.25rem;
+  text-align: right;
+}
+
+.btn_clothes {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 57px;
+  min-width: 80px;
+  padding: 0 18px;
+  margin-top: 0.25rem;
+  border: 1px rgba(0, 95, 254, .3) solid;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: -.17px;
+  line-height: 14px;
+  text-align: center;
+  background: none;
+  cursor: pointer;
+  color: #0066FF;
+  transition: all 0.3s ease;
+}
+
+.btn_clothes:hover {
+  background-color: #0066FF;
+  color: white;
+}
+
+.unit {
+  margin-left: 0.5rem;
+  color: #0066FF;
+}
+
+/* .category-item.active {
+  border: 2px solid #0066FF;
+  transform: scale(1.05);
+  border-radius: 30px;
+} */
+
+.category-item.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.category-item:not(.disabled):hover {
+  transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+  .form-container {
+    padding: 0 1rem;
+  }
+  
+  .measurement-input {
+    width: 6rem;
+  }
+  
+  .category-title {
+    font-size: 1rem;
+  }
+}
+
 /*! normalize.css v7.0.0 | MIT License | github.com/necolas/normalize.css */
 html {
   line-height: 1.15;

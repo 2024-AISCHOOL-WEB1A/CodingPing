@@ -20,7 +20,7 @@ const Description = () => {
                     <h2>쇼핑을 더욱 쉽고 편하게 </h2>
                   </div>
                   <div className="wt-description-text">
-                    <p>그 동안 헷갈렸던 사이즈에 대한 고민을 줄여드리겠습니다 </p>
+                    <p>그 동안 헷갈리게한 사이즈에 대한 고민을 줄여드리겠습니다 </p>
                   </div>
                 </div>
               </div>
