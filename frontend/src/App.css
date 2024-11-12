@@ -568,39 +568,44 @@ tr:first-child .table-cell-content {
 
 /* 마이페이지 css 끝 */
 
-/* Clothes.css */
+/* 의류착용 페이지 css 시작 */
+
+/* Container
+----------------------------------------*/
 .clothes-container {
-  max-width: 1200px;
+  max-width: 1500px;
   margin: 0 auto;
-  padding: 120px 1rem 2rem;
+  min-height: 100vh;
+  padding: 20px 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
 }
 
-/* Category Grid Styles */
+/* Category Grid Layout
+----------------------------------------*/
 .category-grid {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 2rem;
-  margin-bottom: 2rem;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1500px;
+  transition: all 0.5s ease-in-out;
+  position: relative;
+  top: 50vh;
+  transform: translateY(-50%);
 }
 
-@media (max-width: 1024px) {
-  .category-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (max-width: 768px) {
-  .category-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
+/* Category Item Styles
+----------------------------------------*/
 .category-item {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.category-content {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -619,7 +624,7 @@ tr:first-child .table-cell-content {
 .category-image {
   width: 100%;
   height: 300px;
-  object-fit: cover;
+  object-fit: fill;
 }
 
 .category-title {
@@ -627,37 +632,60 @@ tr:first-child .table-cell-content {
   text-align: center;
   font-size: 1.125rem;
   font-weight: 500;
-  color: #0066FF;
+  color: #000000;
 }
 
-/* Form Styles */
+.category-item.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.category-content:not(.disabled):hover {
+  transform: scale(1.05);
+}
+
+/* Form Container
+----------------------------------------*/
 .form-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 100%;
-  max-width: 600px;
-  height: 0;
-  overflow: hidden;
-  transition: height 0.5s ease-in-out;
-  margin-top: 2rem;
+  max-width: 500px;
+  opacity: 0;
+  visibility: hidden;
+  z-index: 1000;
+  transition: opacity 0.5s ease-in-out, visibility 0s linear 0.5s;
 }
 
 .form-container.visible {
-  height: 500px; /* 폼의 실제 높이에 맞게 조정 */
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.5s ease-in-out, visibility 0s linear 0s;
 }
 
+/* Form Card Styles
+----------------------------------------*/
 .form-card {
+  width: 100%;
+  max-width: 500px;
   border: 2px solid black;
   border-radius: 0.5rem;
   padding: 1rem;
   background: white;
-  transform: translateY(-100%);
-  transition: transform 0.5s ease-in-out;
+  transform: translateY(-20px);
+  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin: 0 auto;
+  opacity: 0;
 }
 
 .form-card.slide-down {
   transform: translateY(0);
+  opacity: 1;
 }
 
 .form-title {
@@ -668,6 +696,8 @@ tr:first-child .table-cell-content {
   color: #0066FF;
 }
 
+/* Form Fields
+----------------------------------------*/
 .measurement-form {
   display: flex;
   flex-direction: column;
@@ -703,6 +733,13 @@ tr:first-child .table-cell-content {
   text-align: right;
 }
 
+.unit {
+  margin-left: 0.5rem;
+  color: #0066FF;
+}
+
+/* Button Styles
+----------------------------------------*/
 .btn_clothes {
   display: flex;
   align-items: center;
@@ -729,29 +766,22 @@ tr:first-child .table-cell-content {
   color: white;
 }
 
-.unit {
-  margin-left: 0.5rem;
-  color: #0066FF;
-}
-
-/* .category-item.active {
-  border: 2px solid #0066FF;
-  transform: scale(1.05);
-  border-radius: 30px;
-} */
-
-.category-item.disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.category-item:not(.disabled):hover {
-  transform: scale(1.05);
+/* Responsive Styles
+----------------------------------------*/
+@media (max-width: 1024px) {
+  .category-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 @media (max-width: 768px) {
-  .form-container {
-    padding: 0 1rem;
+  .category-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .form-card {
+    width: 100%;
+    padding: 1rem;
   }
   
   .measurement-input {
@@ -762,6 +792,8 @@ tr:first-child .table-cell-content {
     font-size: 1rem;
   }
 }
+
+/* 의류착용 페이지 css 끝 */
 
 /*! normalize.css v7.0.0 | MIT License | github.com/necolas/normalize.css */
 html {
