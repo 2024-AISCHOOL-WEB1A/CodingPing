@@ -16,6 +16,50 @@ const schedule = require("node-schedule");
 const FormData = require('form-data');  // npm install form-data
 
 
+
+// 서버 시작 시 실행될 함수
+function cleanupOldFiles() {
+    const uploadDir = path.join(__dirname, '../upload');
+    const oneHourAgo = Date.now() - (60 * 60 * 1000);  // 1시간 전 시간
+
+    fs.readdir(uploadDir, (err, files) => {
+        if (err) {
+            console.error('폴더 읽기 실패:', err);
+            return;
+        }
+
+        files.forEach(file => {
+            const filePath = path.join(uploadDir, file);
+            
+            fs.stat(filePath, (err, stats) => {
+                if (err) {
+                    console.error('파일 정보 읽기 실패:', err);
+                    return;
+                }
+
+                if (stats.ctimeMs < oneHourAgo) {  // 파일이 1시간보다 오래되었으면 삭제
+                    fs.unlink(filePath, (err) => {
+                        if (err) {
+                            console.error(`파일 삭제 실패: ${file}`, err);
+                        } else {
+                            console.log(`오래된 파일 삭제 완료: ${file}`);
+                        }
+                    });
+                }
+            });
+        });
+    });
+}
+
+// 서버 시작 시 실행
+cleanupOldFiles();
+
+// 주기적으로 정리 (옵션)
+// 매 시간마다 정리
+schedule.scheduleJob('0 * * * *', cleanupOldFiles);
+
+
+
 router.get('/', (req, res) => {
     console.log('Main Router');
     res.sendFile(path.join(__dirname, '..', '..', 'frontend', 'build', 'index.html'))
@@ -106,7 +150,15 @@ router.post('/api/auth/google', async (req, res) => {
                 });
             } else {  // DB 에 구글 이메일이 user_id 로 저장이 되어 있을 때
                 req.session.userId = userEmail;
-                res.json({ success: true, user: payload });
+                console.log("세션에 저장된 아이디 값 확인 : ", req.session);
+                req.session.save((err) => {  // 세션 저장 후 응답 전송
+                    if (err) {
+                        console.log("세션 저장 중 오류 발생:", err);
+                        return res.json({ result: "failed" });
+                    }
+                    console.log("로그인 성공 !", rows);
+                    res.json({ success: true, user: payload });
+                });
             }
         });
     } catch (error) {
@@ -131,48 +183,6 @@ router.get("/getSession", (req, res) => {
     res.json({ id: req.session.userId });
 });
 
-
-
-// 서버 시작 시 실행될 함수
-function cleanupOldFiles() {
-    const uploadDir = path.join(__dirname, '../upload');
-    const oneHourAgo = Date.now() - (60 * 60 * 1000);  // 1시간 전 시간
-
-    fs.readdir(uploadDir, (err, files) => {
-        if (err) {
-            console.error('폴더 읽기 실패:', err);
-            return;
-        }
-
-        files.forEach(file => {
-            const filePath = path.join(uploadDir, file);
-            
-            fs.stat(filePath, (err, stats) => {
-                if (err) {
-                    console.error('파일 정보 읽기 실패:', err);
-                    return;
-                }
-
-                if (stats.ctimeMs < oneHourAgo) {  // 파일이 1시간보다 오래되었으면 삭제
-                    fs.unlink(filePath, (err) => {
-                        if (err) {
-                            console.error(`파일 삭제 실패: ${file}`, err);
-                        } else {
-                            console.log(`오래된 파일 삭제 완료: ${file}`);
-                        }
-                    });
-                }
-            });
-        });
-    });
-}
-
-// 서버 시작 시 실행
-cleanupOldFiles();
-
-// 주기적으로 정리 (옵션)
-// 매 시간마다 정리
-schedule.scheduleJob('0 * * * *', cleanupOldFiles);
 
 
 module.exports = router;

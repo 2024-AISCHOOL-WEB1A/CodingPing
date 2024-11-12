@@ -99,7 +99,7 @@ function App() {
           <Route path='/join' element={<Join />} />
           <Route path='/login' element={<Login setUser={setUser} />} />
           <Route path='/measurement' element={<Measurement />} />
-          <Route path='/mypage' element={<Mypage setUser={setUser} />} />
+          <Route path='/mypage' element={<Mypage sInfo={sInfo} />} />
         </Routes>
       </div>
     </div>
