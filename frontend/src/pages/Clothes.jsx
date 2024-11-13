@@ -106,7 +106,7 @@ const Clothes = () => {
       }));
     }
   };
-  
+
   // 폼이 닫힐 때 measurements 상태를 초기화
   useEffect(() => {
     if (!isFormVisible) {
@@ -149,7 +149,7 @@ const Clothes = () => {
                           <input
                             type="text"
                             className="measurement-input"
-                            placeholder='00.00'
+                            placeholder='00.0'
                             name={field.name}
                             value={measurements[field.name] || ''}
                             onChange={(e) => handleInputChange(e, field)} // 입력 핸들러 추가
