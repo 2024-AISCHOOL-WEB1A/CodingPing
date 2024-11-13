@@ -7,9 +7,7 @@ const fileStore = require("session-file-store")(session)
 const app = express()
 const indexRouter = require("./routes")  // 기본 라우터 (index.js) 불러오기
 const measurementRouter = require("./routes/measurement");  // 3D Mesh 이미지를 위한 라우터 불러오기
-// routes 폴더 안에 파일 이름이 index 인 경우는 경로를 작성할 때 생략이 가능하나,
-// 파일 이름이 다른 경우에는 정확하게 작성해줘야 한다.
-// ex) ./routes/user
+const fittingRouter = require("./routes/fitting")  // heatmap 효과로 인한 결과물들을 위한 라우터 불러오기
 
 // < 정적인 파일 경로 설정 >
 app.use(express.static(path.join(__dirname, "..", "frontend", "build")))  // 프론트엔드 빌드 파일 제공
@@ -41,6 +39,7 @@ app.use(session({
 // < 라우터 설정 >
 app.use("/", indexRouter);  // 기본 경로 ("/") 요청을 indexRouter 로 처리
 app.use("/measurement", measurementRouter);  // "/measurement" 경로 요청을 measurementRouter 로 처리
+app.use("/fitting", fittingRouter)  // "/fitting" 경로 요청을 fittingRouter 로 처리
 
 // < 서버 포트 설정 및 시작 >
 app.set("port", process.env.PORT || 3007)

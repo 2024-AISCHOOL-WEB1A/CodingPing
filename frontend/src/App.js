@@ -101,7 +101,7 @@ function App() {
           <Route path='/login' element={<Login setUser={setUser} />} />
           <Route path='/measurement' element={<Measurement />} />
           <Route path='/mypage' element={<Mypage sInfo={sInfo} />} />
-          <Route path='/clothes' element={<Clothes/>}></Route>
+          <Route path='/clothes' element={<Clothes sInfo={sInfo} />}></Route>
         </Routes>
       </div>
     </div>

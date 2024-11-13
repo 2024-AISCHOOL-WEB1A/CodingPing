@@ -1,27 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
+import instance from '../axios';
 
-const Clothes = () => {
+const Clothes = ({ sInfo }) => {
   const categories = [
-    {
-      title: '반팔',
-      image: '/img/short.png',
-    },
-    {
-      title: '긴팔',
-      image: '/img/long.png',
-    },
-    {
-      title: '긴바지',
-      image: '/img/pants.jpg',
-    },
-    {
-      title: '반바지',
-      image: '/img/shorts.jpg',
-    },
-    {
-      title: '추후 업데이트 예정',
-      image: '/img/update.png',
-    }
+    { title: '반팔', image: '/img/short.png' },
+    { title: '긴팔', image: '/img/long.png' },
+    { title: '긴바지', image: '/img/pants.jpg' },
+    { title: '반바지', image: '/img/shorts.jpg' },
+    { title: '추후 업데이트 예정', image: '/img/update.png' }
   ];
 
   // 상의, 하의 카테고리 그룹화
@@ -114,6 +100,18 @@ const Clothes = () => {
     }
   }, [isFormVisible])
 
+  // 폼 제출(완료 버튼을 클릭) 시 호출되는 핸들러
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    console.log(measurements, selectedCategory);
+    try {
+      const res = await instance.post("/fitting/clothes", { clothesSizes: measurements, clothesType: selectedCategory, userId: sInfo.user_id });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   return (
     <div className="clothes-container">
       <div className='page-header'>
@@ -148,7 +146,7 @@ const Clothes = () => {
               <div ref={formRef} className={`form-container ${isFormVisible ? 'visible' : ''}`}>
                 <div className={`form-card ${isFormVisible ? 'slide-down' : ''}`}>
                   <h2 className="form-title">의류 정보 입력</h2>
-                  <form className="measurement-form">
+                  <form className="measurement-form" onSubmit={handleSubmit}>
                     {getFieldsForCategory(selectedCategory).map((field) => (
                       <div key={field.name} className="form-field">
                         <label className="field-label">{field.label}</label>
