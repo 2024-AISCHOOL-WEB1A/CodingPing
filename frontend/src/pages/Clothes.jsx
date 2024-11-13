@@ -116,6 +116,13 @@ const Clothes = () => {
 
   return (
     <div className="clothes-container">
+      <div className='page-header'>
+        <h1 className='page-title text-4xl font-bold mb-4'>의류치수 입력 페이지</h1>
+        <p className='page-description text-lg mb-8 text-gray-700'>
+          이 페이지는 착용감을 확인하시기를 원하는 의류의 카테고리를 정하고 치수 정보를 입력할 수 있는 페이지입니다.
+        </p>
+      </div>
+
       <div className={`category-grid ${isFormVisible ? 'shift-up' : ''}`}>
         {categories.map((category, index) => (
           <div

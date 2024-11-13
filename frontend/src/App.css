@@ -639,7 +639,7 @@ tr:first-child .table-cell-content {
 
 /* 마이페이지 css 끝 */
 
-/* 의류착용 페이지 css 시작 */
+/* 의류치수 입력 페이지 css 시작 */
 
 /* Container
 ----------------------------------------*/
@@ -654,6 +654,25 @@ tr:first-child .table-cell-content {
   position: relative;
 }
 
+.page-header {
+  width: 100%;
+  max-width: 1500px;
+  text-align: left;
+  margin-bottom: 2rem;
+  margin-left: 1rem;
+  padding-top: 4rem;
+}
+
+.page-title {
+  margin-bottom: 1rem;
+  font-size: 50px;
+}
+
+.page-description {
+  line-height: 1.5;
+  font-size: 20px;
+}
+
 /* Category Grid Layout
 ----------------------------------------*/
 .category-grid {
@@ -664,8 +683,9 @@ tr:first-child .table-cell-content {
   max-width: 1500px;
   transition: all 0.5s ease-in-out;
   position: relative;
-  top: 50vh;
-  transform: translateY(-50%);
+  /* top: 50vh; */
+  /* transform: translateY(-50%); */
+  margin-top: 0.5rem;
 }
 
 /* Category Item Styles
