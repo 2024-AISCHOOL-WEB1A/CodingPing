@@ -8,12 +8,9 @@ const { OAuth2Client } = require('google-auth-library');
 // Google 인증 클라이언트 설정
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
-const multer = require("multer");  // 파일 업로드를 위한 multer 모듈 불러옴  // npm i multer
 const axios = require("axios");  // HTTP 요청을 위한 axios 모듈 불러옴  // npm i axios 
 const fs = require("fs");  // 파일 시스템을 다루기 위한 fs 모듈 불러옴
 const schedule = require("node-schedule");
-
-const FormData = require('form-data');  // npm install form-data
 
 
 

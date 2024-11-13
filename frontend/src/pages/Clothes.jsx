@@ -1,29 +1,14 @@
-// Clothes.jsx
 import React, { useState } from 'react';
+import instance from '../axios';
 
 
-const Clothes = () => {
+const Clothes = ({ sInfo }) => {
   const categories = [
-    {
-      title: '반팔',
-      image: '/img/pad.png',
-    },
-    {
-      title: '긴팔',
-      image: '/img/pad.png',
-    },
-    {
-      title: '긴바지',
-      image: '/img/pad.png',
-    },
-    {
-      title: '반바지',
-      image: '/img/pad.png',
-    },
-    {
-      title: '추후 업데이트 예정',
-      image: '/img/pad.png',
-    }
+    { title: '반팔', image: '/img/pad.png' },
+    { title: '긴팔', image: '/img/pad.png' },
+    { title: '긴바지', image: '/img/pad.png' },
+    { title: '반바지', image: '/img/pad.png' },
+    { title: '추후 업데이트 예정', image: '/img/pad.png' }
   ];
 
   // 상의, 하의 카테고리 그룹화
@@ -49,12 +34,14 @@ const Clothes = () => {
   // 상태 관리를 위한 useState
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [isFormVisible, setIsFormVisible] = useState(false);
+  const [formValues, setFormValues] = useState({});
 
   // 카테고리 클릭 처리를 위한 함수
   const handleCategoryClick = (categoryTitle) => {
     if (categoryTitle !== '추후 업데이트 예정') {
       setSelectedCategory(categoryTitle);
       setIsFormVisible(!isFormVisible); // 토글 형태로 변경
+      setFormValues({});  // 카테고리 변경 시 입력 값 초기화
     }
   }
 
@@ -67,6 +54,27 @@ const Clothes = () => {
     }
     return [];
   }
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
+  };
+
+  // 폼 제출(완료 버튼을 클릭) 시 호출되는 핸들러
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    console.log(formValues, selectedCategory);
+    try {
+      const res = await instance.post("/fitting/clothes", { clothesSizes: formValues, clothesType: selectedCategory, userId: sInfo.user_id });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
 
   return (
     <div className="clothes-container">
@@ -95,7 +103,7 @@ const Clothes = () => {
       <div className={`form-container ${isFormVisible ? 'visible' : ''}`}>
         <div className={`form-card ${isFormVisible ? 'slide-down' : ''}`}>
           <h2 className="form-title">의류 정보 입력</h2>
-          <form className="measurement-form">
+          <form className="measurement-form" onSubmit={handleSubmit}>
             {selectedCategory && getFieldsForCategory(selectedCategory).map((field) => (
               <div key={field.name} className="form-field">
                 <label className="field-label">{field.label}</label>
@@ -104,6 +112,8 @@ const Clothes = () => {
                     type="text"
                     className="measurement-input"
                     name={field.name}
+                    value={formValues[field.name] || ""}
+                    onChange={handleChange}
                   />
                   <span className="unit">cm</span>
                 </div>
