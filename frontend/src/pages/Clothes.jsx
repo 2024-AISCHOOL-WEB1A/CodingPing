@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import instance from '../axios';
 
 const Clothes = ({ sInfo }) => {
@@ -104,9 +104,9 @@ const Clothes = ({ sInfo }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(formValues, selectedCategory);
+    console.log(measurements, selectedCategory);
     try {
-      const res = await instance.post("/fitting/clothes", { clothesSizes: formValues, clothesType: selectedCategory, userId: sInfo.user_id });
+      const res = await instance.post("/fitting/clothes", { clothesSizes: measurements, clothesType: selectedCategory, userId: sInfo.user_id });
     } catch (err) {
       console.log(err);
     }

@@ -160,9 +160,8 @@ router.get("/mypage", async (req, res) => {
 
         // body_tb 테이블에서 데이터를 가져오는 sql 쿼리문
         const sql = `
-                        SELECT height, weight, chest_circ, waist_circ, hip_circ, 
-                               arm_length, forearm_length, upper_body_length, thigh_length, leg_length,
-                               shoulder_width, waist_width, chest_width, measurement_date 
+                        SELECT height, weight, arm_length, forearm_length, upper_length, leg_length,
+                               shoulder_width, waist_width, chest_width, hip_width, thigh_width, measurement_date 
                         FROM body_measurement
                         WHERE user_id = ?
                         ORDER BY measurement_date DESC

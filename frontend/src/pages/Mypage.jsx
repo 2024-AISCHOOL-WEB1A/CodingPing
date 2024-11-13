@@ -57,14 +57,14 @@ const Mypage = ({ sInfo }) => {
                 <img src='/img/bodyshape2.png' alt="body silhouette" />
 
                 {/* 사각형 데이터 삽입 */}
-                <div className="data-box data-box-1">상체길이 {latestMeasurement.upper_body_length}cm</div>
-                <div className="data-box data-box-2">가슴둘레 {latestMeasurement.chest_circ}cm</div>
+                <div className="data-box data-box-1">상체길이 {latestMeasurement.upper_length}cm</div>
+                <div className="data-box data-box-2">가슴단면 {latestMeasurement.chest_width}cm</div>
                 <div className="data-box data-box-3">팔뚝길이 {latestMeasurement.forearm_length}cm</div>
                 <div className="data-box data-box-4">팔 길이 {latestMeasurement.arm_length}cm</div>
-                <div className="data-box data-box-5">엉덩이둘레 {latestMeasurement.hip_circ}cm</div>
-                <div className="data-box data-box-6">허벅지길이 {latestMeasurement.thigh_length}cm</div>
+                <div className="data-box data-box-5">엉덩이 단면 {latestMeasurement.hip_width}cm</div>
+                <div className="data-box data-box-6">허벅지단면 {latestMeasurement.thigh_width}cm</div>
                 <div className="data-box data-box-7">다리 길이 {latestMeasurement.leg_length}cm</div>
-                <div className="data-box data-box-8">허리둘레 {latestMeasurement.waist_circ}cm</div>
+                <div className="data-box data-box-8">허리단면 {latestMeasurement.waist_width}cm</div>
 
                 {/* 키와 몸무게 */}
                 <div className='stats-section'>
@@ -92,35 +92,31 @@ const Mypage = ({ sInfo }) => {
                     <table>
                         <thead>
                             <tr>
-                                <th>측정날짜</th>
-                                <th>상체길이</th>
-                                <th>어깨너비</th>
-                                <th>가슴너비</th>
-                                <th>팔뚝 길이</th>
+                                <th>측정 날짜</th>
+                                <th>어깨 너비</th>
+                                <th>가슴 단면</th>
                                 <th>팔 길이</th>
-                                <th>다리길이</th>
-                                <th>허리너비</th>
-                                <th>엉덩이둘레</th>
-                                <th>가슴둘레</th>
-                                <th>허벅지길이</th>
-                                <th>허리둘레</th>
+                                <th>팔뚝 길이</th>
+                                <th>상체 길이</th>
+                                <th>허리 단면</th>
+                                <th>엉덩이 단면</th>
+                                <th>허벅지 단면</th>
+                                <th>다리 길이</th>
                             </tr>
                         </thead>
                         <tbody>
                             {measurements.map((measurement, index) => (
                                 <tr key={index}>
                                     <td>{formatDate(measurement.measurement_date)}</td>
-                                    <td>{measurement.upper_body_length}</td>
                                     <td>{measurement.shoulder_width}</td>
                                     <td>{measurement.chest_width}</td>
-                                    <td>{measurement.forearm_length}</td>
                                     <td>{measurement.arm_length}</td>
-                                    <td>{measurement.leg_length}</td>
+                                    <td>{measurement.forearm_length}</td>
+                                    <td>{measurement.upper_length}</td>
                                     <td>{measurement.waist_width}</td>
-                                    <td>{measurement.hip_circ}</td>
-                                    <td>{measurement.chest_circ}</td>
-                                    <td>{measurement.waist_circ}</td>
-                                    <td>{measurement.thigh_length}</td>
+                                    <td>{measurement.hip_width}</td>
+                                    <td>{measurement.thigh_width}</td>
+                                    <td>{measurement.leg_length}</td>
                                 </tr>
                             ))}
                         </tbody>
