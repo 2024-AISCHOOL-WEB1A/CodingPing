@@ -652,16 +652,36 @@ tr:first-child .table-cell-content {
   position: relative;
 }
 
-/* 성별 선택 버튼 스타일 */
-label {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+.page-header {
+  text-align: center;
+  margin-bottom: 2rem;
 }
 
+.image-upload {
+  display: flex;
+  gap: 48px;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 900px;
+  justify-content: center;
+}
+
+/* Form styles */
+.form-group {
+  margin-bottom: 24px;
+}
+
+form label {
+  display: block;
+  margin-bottom: 16px;
+  font-weight: 500;
+}
+
+/* Gender button styles */
 .gender-buttons {
   display: flex;
   gap: 8px;
+  margin-top: 8px;
 }
 
 .input-gender-button {
@@ -685,19 +705,21 @@ label {
   border-color: #0056b3;
 }
 
-/* 키, 몸무게 입력 필드 스타일 */
+/* Input field styles */
 .input-input-group {
   position: relative;
+  margin-bottom: 24px;
 }
 
 .input-input-group input {
-  width: 50%;
-  padding: 12px 12px 12px;
+  width: 100%;
+  padding: 12px;
   border: 1px solid #dadada;
   border-radius: 6px;
   font-size: 15px;
   outline: none;
   transition: border-color 0.2s ease;
+  margin-top: 8px;
 }
 
 .input-input-group input:focus {
@@ -708,14 +730,7 @@ label {
   color: #8e8e8e;
 }
 
-/* 파일 업로드 영역 스타일 */
-.file-input-wrapper {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  margin: 10px 0;
-}
-
+/* File upload area styles */
 .file-drop-zone {
   padding: 12px;
   border: 2px dashed #dee2e6;
@@ -723,7 +738,12 @@ label {
   background-color: #f8f9fa;
   cursor: pointer;
   transition: all 0.2s ease;
-  width: 250px;
+  width: 300px;
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 }
 
 .file-drop-zone:hover {
@@ -736,14 +756,6 @@ label {
   background-color: #f8fff8;
 }
 
-.file-input-label {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  cursor: pointer;
-  width: 100%;
-}
-
 .hidden-file-input {
   display: none;
 }
@@ -754,10 +766,12 @@ label {
   align-items: center;
   gap: 8px;
   width: 100%;
+  height: 100%;
+  justify-content: center;
 }
 
 .upload-icon {
-  font-size: 20px;
+  font-size: 24px;
 }
 
 .upload-text {
@@ -767,12 +781,16 @@ label {
   white-space: pre-line;
 }
 
-.has-file .upload-text {
-  color: #28a745;
+.uploaded-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
 }
 
-/* Submit 버튼 스타일 */
+/* Submit button styles */
 .submit-button {
+  width: 100%;
   padding: 12px 24px;
   background-color: #007bff;
   color: white;
@@ -781,7 +799,7 @@ label {
   font-size: 16px;
   cursor: pointer;
   transition: background-color 0.2s ease;
-  margin-top: 20px;
+  margin-top: 24px;
 }
 
 .submit-button:hover {

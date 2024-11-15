@@ -90,19 +90,45 @@ const Measurement = () => {
   return (
     <div className='input-container'>
       <div className='page-header'>
-        <h1 className='page-title text-4xl font-bold mb-4'>신체치수 측정 페이지</h1>
-        <p className='page-description text-lg mb-8 text-gray-700'>
+        <h1 className='page-title'>신체치수 측정 페이지</h1>
+        <p className='page-description'>
           이 페이지는 체형분석을 원하는 본인의 사진과 키, 체중을 입력하는 페이지입니다.
         </p>
       </div>
-      <div style={styles.formContainer}>
-        <div style={styles.silhouette}>
-          {imagePath && (
-            <img src={`http://localhost:3007/image/${imagePath}`} alt="Uploaded" />
+
+      <div className='image-upload'>
+        {/* 이미지 업로드 영역 */}
+        <label 
+          className={`file-drop-zone ${image ? 'has-file' : ''}`}
+          onDragOver={handleDragOver}
+          onDrop={handleDrop}
+        >
+          <input 
+            type="file"
+            onChange={handleImageChange}
+            accept="image/*"
+            className="hidden-file-input"
+            required
+          />
+          {imagePath ? (
+            <img 
+              src={`http://localhost:3007/image/${imagePath}`} 
+              alt="Uploaded" 
+              className="uploaded-image"
+            />
+          ) : (
+            <div className="upload-content">
+              <span className="upload-icon">📁</span>
+              <span className="upload-text">
+                {image ? image.name : '이미지를 드래그하거나\n클릭하여 업로드'}
+              </span>
+            </div>
           )}
-        </div>
-        <form style={styles.form} onSubmit={handleSubmit}>
-          <div>
+        </label>
+
+        {/* 입력 폼 */}
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
             <label>
               성별
               <div className="gender-buttons">
@@ -121,7 +147,8 @@ const Measurement = () => {
               </div>
             </label>
           </div>
-          <div className='input-input-group'>
+
+          <div className="input-input-group">
             <label>
               신장
               <input
@@ -133,7 +160,8 @@ const Measurement = () => {
               />
             </label>
           </div>
-          <div className='input-input-group'>
+
+          <div className="input-input-group">
             <label>
               체중
               <input
@@ -145,62 +173,14 @@ const Measurement = () => {
               />
             </label>
           </div>
-          <div className="file-input-wrapper">
-            <div 
-              className={`file-drop-zone ${image ? 'has-file' : ''}`}
-              onDragOver={handleDragOver}
-              onDrop={handleDrop}
-            >
-              <label className="file-input-label">
-                <input 
-                  type="file" 
-                  onChange={handleImageChange} 
-                  required 
-                  className="hidden-file-input"
-                  accept="image/*"
-                />
-                <div className="upload-content">
-                  <span className="upload-icon">📁</span>
-                  <span className="upload-text">
-                    {image ? image.name : '이미지를 드래그하거나\n클릭하여 업로드'}
-                  </span>
-                </div>
-              </label>
-            </div>
-          </div>
-          <button type="submit" className="submit-button">next</button>
+
+          <button type="submit" className="submit-button">
+            next
+          </button>
         </form>
       </div>
     </div>
   );
 }
-
-const styles = {
-  container: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    padding: "20px",
-    fontFamily: "Arial, sans-serif",
-  },
-  formContainer: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    width: "600px",
-    marginTop: "20px",
-  },
-  silhouette: {
-    width: "150px",
-    height: "300px",
-    backgroundColor: "black",
-    borderRadius: "50%",
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "10px",
-  },
-};
 
 export default Measurement;
