@@ -282,7 +282,7 @@
 .submit-button {
   width: 100%;
   padding: 14px;
-  background-color: #2128bd;
+  background-color: #0066FF;
   color: white;
   border: none;
   border-radius: 6px;
@@ -500,7 +500,7 @@ html, body {
 
 .unit {
   font-size: 1rem;
-  color: #2128bd !important;
+  color: #005ffe !important;
   margin-left: 0.25rem;
 }
 
@@ -639,7 +639,160 @@ tr:first-child .table-cell-content {
 
 /* 마이페이지 css 끝 */
 
-/* 의류착용 페이지 css 시작 */
+/* 신체 측정 페이지 css 시작 */
+
+.input-container {
+  max-width: 1500px;
+  margin: 0 auto;
+  min-height: 100vh;
+  padding: 20px 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+/* 성별 선택 버튼 스타일 */
+label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.gender-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.input-gender-button {
+  padding: 12px;
+  border: 1px solid #dadada;
+  border-radius: 6px;
+  background: white;
+  color: #333;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.input-gender-button:hover {
+  background: #f5f5f5;
+}
+
+.input-gender-button.selected {
+  background: #007bff;
+  color: white;
+  border-color: #0056b3;
+}
+
+/* 키, 몸무게 입력 필드 스타일 */
+.input-input-group {
+  position: relative;
+}
+
+.input-input-group input {
+  width: 50%;
+  padding: 12px 12px 12px;
+  border: 1px solid #dadada;
+  border-radius: 6px;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.input-input-group input:focus {
+  border-color: #2128bd;
+}
+
+.input-group input::placeholder {
+  color: #8e8e8e;
+}
+
+/* 파일 업로드 영역 스타일 */
+.file-input-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: 10px 0;
+}
+
+.file-drop-zone {
+  padding: 12px;
+  border: 2px dashed #dee2e6;
+  border-radius: 8px;
+  background-color: #f8f9fa;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  width: 250px;
+}
+
+.file-drop-zone:hover {
+  border-color: #007bff;
+  background-color: #e9ecef;
+}
+
+.file-drop-zone.has-file {
+  border-color: #28a745;
+  background-color: #f8fff8;
+}
+
+.file-input-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.hidden-file-input {
+  display: none;
+}
+
+.upload-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.upload-icon {
+  font-size: 20px;
+}
+
+.upload-text {
+  font-size: 13px;
+  color: #6c757d;
+  text-align: center;
+  white-space: pre-line;
+}
+
+.has-file .upload-text {
+  color: #28a745;
+}
+
+/* Submit 버튼 스타일 */
+.submit-button {
+  padding: 12px 24px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin-top: 20px;
+}
+
+.submit-button:hover {
+  background-color: #0056b3;
+}
+
+
+/* 신체 측정 페이지 css 끝 */
+
+
+/* 의류치수 입력 페이지 css 시작 */
 
 /* Container
 ----------------------------------------*/
@@ -654,6 +807,25 @@ tr:first-child .table-cell-content {
   position: relative;
 }
 
+.page-header {
+  width: 100%;
+  max-width: 1500px;
+  text-align: left;
+  margin-bottom: 2rem;
+  margin-left: 1rem;
+  padding-top: 4rem;
+}
+
+.page-title {
+  margin-bottom: 1rem;
+  font-size: 50px;
+}
+
+.page-description {
+  line-height: 1.5;
+  font-size: 20px;
+}
+
 /* Category Grid Layout
 ----------------------------------------*/
 .category-grid {
@@ -664,8 +836,9 @@ tr:first-child .table-cell-content {
   max-width: 1500px;
   transition: all 0.5s ease-in-out;
   position: relative;
-  top: 50vh;
-  transform: translateY(-50%);
+  /* top: 50vh; */
+  /* transform: translateY(-50%); */
+  margin-top: 0.5rem;
 }
 
 /* Category Item Styles

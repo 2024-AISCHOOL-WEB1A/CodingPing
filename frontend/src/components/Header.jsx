@@ -55,7 +55,7 @@ const Header = ({ user, setUser }) => {
                   </Link>
                 ) : (
                   <Link
-                    to="/mypage"
+                    to="/clothes"
                     className="wt-navbar-nav-item router-link"
                     data-magnetic
                     data-cursor="-scale"
