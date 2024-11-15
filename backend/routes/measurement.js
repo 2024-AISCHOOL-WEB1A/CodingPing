@@ -14,7 +14,8 @@ const multer = require("multer");  // 파일 업로드를 위한 multer 모듈 �
 const schedule = require("node-schedule");  // 스케줄링을 위해 node-schedule 모듈 불러옴  // npm i node-schedule
 const FormData = require('form-data');  // npm install form-data
 const conn = require("../config/database");
-
+// const https = require('https');
+// const agent = new https.Agent({ rejectUnauthorized: false });
 
 
 /** multer 스토리지 설정 */
@@ -66,11 +67,12 @@ const scheduleFileDelete = (filename) => {
 // ** POST / 측정 요청 라우트 **
 // 사용자가 업로드한 이미지와 신체 정보를 FastAPI 서버로 전송하는 요청 처리
 router.post("/", upload.single("image"), async (req, res) => {
-    const { gender, height, weight } = req.body;
+    const { userId, gender, height, weight } = req.body;
     const file = req.file;  // multer로 업로드된 이미지 파일 정보
 
     try {
-        console.log("체형 측정 Router 작동 :", gender, height, weight, file.path);
+        console.log("체형 측정 Router 작동 :", userId, gender, height, weight, file.path);
+        console.log("userId", userId);
 
         // FastAPI 서버로 전송할 폼 데이터 생성
         const formData = new FormData();
@@ -79,48 +81,52 @@ router.post("/", upload.single("image"), async (req, res) => {
         formData.append('file', fs.createReadStream(file.path), file.originalname);  // 업로드된 이미지를 파일 스트림으로 추가
 
         // FastAPI 서버 URL (ngrok URL 이므로 수시로 바뀔 수 있음)
-        const url = "https://70d7-114-110-128-38.ngrok-free.app";
+        const url = "https://97ce-114-110-128-38.ngrok-free.app";
         const response = await axios.post(`${url}/predict`, formData, {
             headers: formData.getHeaders(),
-            maxBodyLength: Infinity  // Body 길이 무제한 설정 (대용량 데이터 전송을 위한 설정)
+            maxBodyLength: Infinity,  // Body 길이 무제한 설정 (대용량 데이터 전송을 위한 설정)
+            // httpsAgent: agent  // SSL 검증을 비활성화할 수 있습니다 (테스트 환경에서만 사용 권장)
         });
 
         console.log("FastAPI서버에서 받은 response data : ", response.data); 
         res.json({ message: "Image processed by FastAPI server", data: response.data });  // FastAPI 서버로 전송된 이미지 경로를 React 서버에 전달
 
-        // // 모델링을 통해서 나온 사용자의 신체 정보를 DB 에 저장
-        // const sql = "INSERT INTO body_tb\
-        //                 (\
-        //                     user_id, height, weight, \
-        //                     chest_circ, waist_circ, hip_circ, \
-        //                     arm_length, forearm_length, upper_body_length, thigh_length, leg_length, \
-        //                     shoulder_width, waist_width, chest_width, img\
-        //                 )\
-        //                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        // conn.query(sql, [
-        //     req.session.userId,  // 현재 로그인한 사용자의 ID
-        //     height,
-        //     weight,
-        //     chest_circ,  // 가슴 둘레 (response.data.~~ 로 바꿔줘야 함).
-        //     waist_circ,  // 허리 둘레
-        //     hip_circ,  // 엉덩이 둘레
-        //     arm_length,  // 팔 길이
-        //     forearm_length,  // 팔뚝 길이
-        //     upper_body_length,  // 상체 길이
-        //     thigh_length,  // 허벅지 길이
-        //     leg_length,  // 다리 길이
-        //     shoulder_width,  // 어깨 너비
-        //     waist_width,  // 허리 너비
-        //     chest_width,  // 가슴 너비
-        //     response.data.image_path,  // image 폴더에 저장된 사용자의 3D Mesh 이미지파일 이름
-        // ], (err, rows) => {
-        //     if (err) {  // 모델링 된 결과를 DB 에 저장 실패했을 시 에러 처리
-        //         console.log("DB 저장 실패 : ", err);
-        //         return res.status(500).json({ error: "Database error" });
-        //     } else {  // DB 에 저장 성공 시 클라이언트에 성공 응답 전송
-        //         console.log("체형 측정 값 DB 저장 성공 !!");
-        //     }
-        // });
+        // 모델링을 통해서 나온 사용자의 신체 정보를 DB 에 저장
+        const sql = `INSERT INTO body_measurement
+                        (
+                            user_id, gender, height, weight, 
+                            arm_length, forearm_length, upper_length, thigh_length, leg_length,
+                            shoulder_width, waist_width, chest_width, hip_width, thigh_width, 
+                            chest_circ, hip_circ, waist_circ, image
+                        )
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+        conn.query(sql, [
+            userId,  // 현재 로그인한 사용자의 ID
+            gender,
+            height,
+            weight,
+            response.data.measurements.arm_length,  // 팔 길이
+            response.data.measurements.forearm_length,  // 팔뚝 길이
+            response.data.measurements.upper_length,  // 상체 길이
+            response.data.measurements.thigh_length,  // 허벅지 길이
+            response.data.measurements.leg_length,  // 다리 길이
+            response.data.measurements.shoulder_width,  // 어깨 너비
+            response.data.measurements.waist_width,  // 허리 너비
+            response.data.measurements.chest_width,  // 가슴 단면
+            response.data.measurements.hip_width,  // 엉덩이 단면
+            response.data.measurements.thigh_width,  // 허벅지 단면
+            response.data.measurements.chest_circ,  // 가슴 둘레
+            response.data.measurements.hip_circ,  // 엉덩이 둘레
+            response.data.measurements.waist_circ,  // 허리 둘레
+            response.data.image_path,  // image 폴더에 저장된 사용자의 3D Mesh 이미지파일 이름
+        ], (err, rows) => {
+            if (err) {  // 모델링 된 결과를 DB 에 저장 실패했을 시 에러 처리
+                console.log("DB 저장 실패 : ", err);
+                return res.status(500).json({ error: "Database error" });
+            } else {  // DB 에 저장 성공 시 클라이언트에 성공 응답 전송
+                console.log("체형 측정 값 DB 저장 성공 !!");
+            }
+        });
     } catch (err) {
         console.error("상세 에러 정보:", {
             message: err.message,
@@ -168,7 +174,7 @@ router.get("/mypage", async (req, res) => {
                         LIMIT 3
                     `;
         conn.query(sql, [userId], (err, rows) => {
-            if (err) {
+            if (err || rows.length === 0) {
                 console.log("DB 에서 값 불러오기 실패 .. : ", err);
             } else {
                 console.log("DB 에서 값 가져오기 성공 !");

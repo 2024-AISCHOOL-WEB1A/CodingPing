@@ -30,6 +30,8 @@ const Mypage = ({ sInfo }) => {
         if (response.data.measurements.length > 0) {
           setMeasurements(response.data.measurements);
           setLatestMeasurement(response.data.measurements[0]);
+        } else {
+          setError(true);
         }
       } catch (err) {
         setError('데이터를 불러오는데 실패했습니다.');
@@ -42,7 +44,7 @@ const Mypage = ({ sInfo }) => {
     fetchMeasurements();
   }, [finalInfo?.user_id]);
 
-  if (isLoading) return <div>로딩중...</div>;
+  if (isLoading) return <div>Try 버튼을 누른 후 신체 치수 측정을 완료해주세요 ...</div>;
   if (error) return <div>{error}</div>;
 
   const formatDate = (dateString) => {

@@ -99,7 +99,7 @@ function App() {
           <Route path='/' element={<Home setUser={setUser} user={user} />} />
           <Route path='/join' element={<Join />} />
           <Route path='/login' element={<Login setUser={setUser} />} />
-          <Route path='/measurement' element={<Measurement />} />
+          <Route path='/measurement' element={<Measurement sInfo={sInfo} />} />
           <Route path='/mypage' element={<Mypage sInfo={sInfo} />} />
           <Route path='/clothes' element={<Clothes sInfo={sInfo} />}></Route>
         </Routes>

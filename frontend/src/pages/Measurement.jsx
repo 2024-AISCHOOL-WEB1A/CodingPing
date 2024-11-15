@@ -2,12 +2,12 @@
 import React, { useEffect, useState } from 'react';
 import instance from '../axios';
 
-const Measurement = () => {
-  const [gender, setGender] = useState("");
-  const [height, setHeight] = useState("");
-  const [weight, setWeight] = useState("");
-  const [image, setImage] = useState(null);
-  const [imagePath, setImagePath] = useState("");
+const Measurement = ({ sInfo }) => {
+	const [gender, setGender] = useState("male");
+	const [height, setHeight] = useState("");
+	const [weight, setWeight] = useState("");
+	const [image, setImage] = useState(null);
+	const [imagePath, setImagePath] = useState("");
 
   // imagePath 상태가 업데이트 될 때마다 콘솔에 로그 출력
   useEffect(() => {
@@ -65,12 +65,13 @@ const Measurement = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // FormData 객체 생성 : FormData는 key, value 형식으로 되어있는 객체
-    const formData = new FormData();
-    formData.append("gender", gender);
-    formData.append("height", height);
-    formData.append("weight", weight);
-    formData.append("image", image);
+		// FormData 객체 생성 : FormData 는 key, value 형식으로 되어있는 객체
+		const formData = new FormData();  // formData.append('key', value);
+		formData.append("userId", sInfo.user_id);
+		formData.append("gender", gender);
+		formData.append("height", height);
+		formData.append("weight", weight);
+		formData.append("image", image);
 
     try {
       // 서버로 FormData 전송
