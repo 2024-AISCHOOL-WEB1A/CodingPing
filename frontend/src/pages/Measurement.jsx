@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import instance from '../axios';
 
 
-const Measurement = () => {
+const Measurement = ({ sInfo }) => {
 	const [gender, setGender] = useState("male");
 	const [height, setHeight] = useState("");
 	const [weight, setWeight] = useState("");
@@ -32,6 +32,7 @@ const Measurement = () => {
 
 		// FormData 객체 생성 : FormData 는 key, value 형식으로 되어있는 객체
 		const formData = new FormData();  // formData.append('key', value);
+		formData.append("userId", sInfo.user_id);
 		formData.append("gender", gender);
 		formData.append("height", height);
 		formData.append("weight", weight);

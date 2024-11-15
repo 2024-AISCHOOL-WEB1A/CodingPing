@@ -106,7 +106,7 @@ const Clothes = ({ sInfo }) => {
 
     console.log(measurements, selectedCategory);
     try {
-      const res = await instance.post("/fitting/clothes", { clothesSizes: measurements, clothesType: selectedCategory, userId: sInfo.user_id });
+      const res = await instance.post("/fitting/clothes", { inputSizes: measurements, clothesType: selectedCategory, userId: sInfo.user_id });
     } catch (err) {
       console.log(err);
     }

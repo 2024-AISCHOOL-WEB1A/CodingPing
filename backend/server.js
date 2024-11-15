@@ -32,7 +32,7 @@ app.use(session({
     secret: "ais",  // 세션 암호화를 위한 비밀 키
     saveUninitialized: false,  // 초기화 되지 않은 세션을 저장하지 않음
     store: new fileStore(fileStoreOptions),  // 파일 스토어를 이용해 세션 저장
-    cookie: { maxAge: 3600000 }  // 쿠키의 유효기간 
+    cookie: { maxAge: 86400000 }  // 쿠키의 유효기간 
 }))
 
 
