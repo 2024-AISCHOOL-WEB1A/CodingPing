@@ -2,20 +2,26 @@
 import React, { useEffect, useState } from 'react';
 import instance from '../axios';
 import { Loader2 } from 'lucide-react' 
+import { useNavigate } from 'react-router-dom'
 // npm install -D tailwindcss postcss autoprefixer, npx tailwindcss init -p, npm i lucide-react 해야됨
 
 const Measurement = ({ sInfo }) => {
+  const navigate = useNavigate();
 	const [gender, setGender] = useState("male");
 	const [height, setHeight] = useState("");
 	const [weight, setWeight] = useState("");
 	const [image, setImage] = useState(null);
 	const [imagePath, setImagePath] = useState("");
+  // 로딩 스피너를 위한 상태관리
   const [isLoading, setIsLoading] = useState(false)
+  // 이미지 처리 완료 여부를 추적하여 다음 페이지로 넘어가기 위한 상태관리
+  const [isProcessingComplete, setIsProcessingComplete] = useState(false)
 
-  // imagePath 상태가 업데이트 될 때마다 콘솔에 로그 출력
+  // imagePath 상태가 업데이트 될 때마다 콘솔에 로그 출력, 상태가 업데이트 될 때마다 처리 완료 상태 변경
   useEffect(() => {
     if (imagePath) {
       console.log("imagePath", imagePath);
+      setIsProcessingComplete(true)
     }
   }, [imagePath]);
 
@@ -67,6 +73,13 @@ const Measurement = ({ sInfo }) => {
   // 폼 제출 (next 버튼을 클릭) 시 호출되는 핸들러
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // 처리가 완료된 후 버튼을 눌렀을 때
+    if (isProcessingComplete) {
+      navigate('/clothes'); // 의류 측정 페이지로 이동
+      return;
+    }
+
     setIsLoading(true);
 
 		// FormData 객체 생성 : FormData 는 key, value 형식으로 되어있는 객체
@@ -196,7 +209,7 @@ const Measurement = ({ sInfo }) => {
           </div>
 
           <button type="submit" className="submit-button" disabled={isLoading}>
-            {isLoading ? '처리중...' : 'next'}
+            {isLoading ? '처리중...' : isProcessingComplete ? 'next' : '측정하기'}
           </button>
         </form>
       </div>
