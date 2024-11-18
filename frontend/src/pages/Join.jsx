@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { User, Lock, Mail, Calendar, ChevronDown } from 'lucide-react'; // npm install lucide-react
+import { User, Lock, Calendar } from 'lucide-react'; // npm install lucide-react
 import instance from '../axios';
 
 const Join = () => {
