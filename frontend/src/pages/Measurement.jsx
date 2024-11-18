@@ -1,6 +1,8 @@
 // Measurement.jsx
 import React, { useEffect, useState } from 'react';
 import instance from '../axios';
+import { Loader2 } from 'lucide-react' 
+// npm install -D tailwindcss postcss autoprefixer, npx tailwindcss init -p, npm i lucide-react 해야됨
 
 const Measurement = ({ sInfo }) => {
 	const [gender, setGender] = useState("male");
@@ -8,6 +10,7 @@ const Measurement = ({ sInfo }) => {
 	const [weight, setWeight] = useState("");
 	const [image, setImage] = useState(null);
 	const [imagePath, setImagePath] = useState("");
+  const [isLoading, setIsLoading] = useState(false)
 
   // imagePath 상태가 업데이트 될 때마다 콘솔에 로그 출력
   useEffect(() => {
@@ -64,6 +67,7 @@ const Measurement = ({ sInfo }) => {
   // 폼 제출 (next 버튼을 클릭) 시 호출되는 핸들러
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
 		// FormData 객체 생성 : FormData 는 key, value 형식으로 되어있는 객체
 		const formData = new FormData();  // formData.append('key', value);
@@ -74,6 +78,9 @@ const Measurement = ({ sInfo }) => {
 		formData.append("image", image);
 
     try {
+      // 실제 서버 연결이 없을 때 테스트를 위한 가짜 딜레이, 실제로 연결할 때는 지워야됨
+      await new Promise(resolve => setTimeout(resolve, 3000));
+
       // 서버로 FormData 전송
       const res = await instance.post("/measurement", formData, {
         headers: { "Content-Type": "multipart/form-data" } // 요청 헤더 설정
@@ -85,6 +92,8 @@ const Measurement = ({ sInfo }) => {
       setImagePath(res.data.data.image_path);
     } catch (err) {
       console.log(err);
+    } finally {
+      setIsLoading(false) // 로딩 종료
     }
   };
 
@@ -96,6 +105,17 @@ const Measurement = ({ sInfo }) => {
           이 페이지는 체형분석을 원하는 본인의 사진과 키, 체중을 입력하는 페이지입니다.
         </p>
       </div>
+
+    {/* 로딩화면 UI */}
+    {isLoading && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-xl flex flex-col items-center">
+            <Loader2 className="animate-spin h-12 w-12 text-blue-500 mb-4" />
+            <p className="text-lg font-medium text-gray-700">체형 분석중...</p>
+            <p className="text-sm text-gray-500">잠시만 기다려주세요</p>
+          </div>
+        </div>
+      )}
 
       <div className='image-upload'>
         {/* 이미지 업로드 영역 */}
@@ -175,8 +195,8 @@ const Measurement = ({ sInfo }) => {
             </label>
           </div>
 
-          <button type="submit" className="submit-button">
-            next
+          <button type="submit" className="submit-button" disabled={isLoading}>
+            {isLoading ? '처리중...' : 'next'}
           </button>
         </form>
       </div>
