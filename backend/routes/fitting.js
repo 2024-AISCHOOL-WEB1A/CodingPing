@@ -4,7 +4,26 @@ const path = require("path");
 const fs = require("fs");  // 파일 시스템을 다루기 위한 fs 모듈 불러옴
 const axios = require("axios");  // HTTP 요청을 위한 axios 모듈 불러옴  // npm i axios 
 const multer = require("multer");  // 파일 업로드를 위한 multer 모듈 불러옴  // npm i multer
+const { v4: uuidv4 } = require('uuid');  // uuid 라이브러리 불러오기  //  npm i uuid
 const conn = require("../config/database");
+
+
+// 파일명을 생성하는 함수를 별도로 분리
+// const generateFileName = (originalName) => {
+//     return `${uuidv4()}_${originalName}`;
+// };
+
+// ** < FastAPI 에서 보낸 히트맵 피팅 이미지를 fitting_image 폴더에 저장하는 코드 > **
+// - multer 설정: fitting_image 폴더에 이미지 저장 (FastAPI 서버에서 받은 이미지 저장하는 것)
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'fitting_image'); // fitting_image 폴더에 저장
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.originalname);
+    },
+});
+const upload = multer({ storage: storage });
 
 
 router.post("/clothes", async (req, res) => {
@@ -47,12 +66,39 @@ router.post("/clothes", async (req, res) => {
 
         if (result) {
             // FastAPI 서버 URL 
-            const url = "https://0336-114-110-128-38.ngrok-free.app";
+            const url = "https://deb5-114-110-128-38.ngrok-free.app";
             const response = await axios.post(`${url}/fitting`, { clothesType, clothesSizes, result }, {
                 headers: { "Content-Type": "application/json" },
                 maxBodyLength: Infinity  // Body 길이 무제한 설정 (대용량 데이터 전송을 위한 설정)
             });
             console.log("FastAPI 에서 가져온 결과 값들 : ", response.data);
+
+            // FastAPI에서 받은 image_path를 사용하여 파일명 생성
+            // const fileName = generateFileName(response.data.image_path);
+            // req.generatedFileName = fileName;
+
+            if (clothesType === "t-shirt" || clothesType === "shirt") {
+                const sql = `INSERT INTO top_fitting (user_id, top_type, top_length, shoulder_width, chest_width, arm_length, fitting_img) VALUES (?, ?, ?, ? ,?, ?, ?)`;
+                conn.query(sql, [userId, clothesType, clothesSizes.length, clothesSizes.shoulder, clothesSizes.chest, clothesSizes.sleeve, response.data.image_path], (err, rows) => {
+                    if (err) {
+                        console.log("DB 저장 실패 : ", err);
+                        return res.status(500).json({ error: "Database error" });
+                    } else {
+                        console.log("DB 저장 성공 !!");   
+                    }
+                });
+            } else {
+                const sql = `INSERT INTO btm_fitting (user_id, btm_type, btm_length, waist_width, hip_width, thigh_width, fitting_img) VALUES (?, ?, ?, ? ,?, ?, ?)`;
+                conn.query(sql, [userId, clothesType, clothesSizes.length, clothesSizes.waist, clothesSizes.hip, clothesSizes.thigh, response.data.image_path], (err, rows) => {
+                    if (err) {
+                        console.log("DB 저장 실패 : ", err);
+                        return res.status(500).json({ error: "Database error" });
+                    } else {
+                        console.log("DB 저장 성공 !!");
+                    }
+                });
+            }
+
         } else {
             res.status(404).send("해당 사용자의 측정 데이터가 없습니다.");
         }
@@ -63,18 +109,6 @@ router.post("/clothes", async (req, res) => {
     }
 });
 
-
-// ** < FastAPI 에서 보낸 히트맵 피팅 이미지를 fitting_image 폴더에 저장하는 코드 > **
-// - multer 설정: fitting_image 폴더에 이미지 저장 (FastAPI 서버에서 받은 이미지 저장하는 것)
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'fitting_image'); // fitting_image 폴더에 저장
-    },
-    filename: (req, file, cb) => {
-        cb(null, file.originalname);
-    },
-});
-const upload = multer({ storage: storage });
 
 // - FastAPI 서버로부터 이미지를 받는 엔드포인트
 router.post('/fitting_image', upload.single('file'), (req, res) => {
