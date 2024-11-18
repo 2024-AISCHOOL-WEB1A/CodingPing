@@ -1,7 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import instance from '../axios';
+import { Loader2 } from 'lucide-react' 
+import { useNavigate } from 'react-router-dom'
 
 const Clothes = ({ sInfo }) => {
+  const navigate = useNavigate();
+
   const categories = [
     { title: '반팔', image: '/img/short.png' },
     { title: '긴팔', image: '/img/long.png' },
@@ -34,6 +38,9 @@ const Clothes = ({ sInfo }) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [measurements, setMeasurements] = useState({}); // 각 입력 필드 값을 저장할 상태
+  const [isLoading, setIsLoading] = useState(false)
+  const [isProcessingComplete, setIsProcessingComplete] = useState(false);
+
 
   // formRef 생성
   const formRef = useRef(null);
@@ -104,11 +111,22 @@ const Clothes = ({ sInfo }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // 처리가 완료된 후 버튼을 눌렀을 때
+    if (isProcessingComplete) {
+      navigate('/heatmap') // 히트맵 페이지로 이동
+      return ;
+    }
+    setIsLoading(true)
+
     console.log(measurements, selectedCategory);
     try {
       const res = await instance.post("/fitting/clothes", { inputSizes: measurements, clothesType: selectedCategory, userId: sInfo.user_id });
+      // 처리 완료 상태로 변경
+      setIsProcessingComplete(true);
     } catch (err) {
       console.log(err);
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -120,6 +138,17 @@ const Clothes = ({ sInfo }) => {
           이 페이지는 착용감을 확인하시기를 원하는 의류의 카테고리를 정하고 치수 정보를 입력할 수 있는 페이지입니다.
         </p>
       </div>
+
+    {/* 로딩화면 UI */}
+    {isLoading && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-6 rounded-lg shadow-xl flex flex-col items-center">
+            <Loader2 className="animate-spin h-12 w-12 text-blue-500 mb-4" />
+            <p className="text-lg font-medium text-gray-700">처리중...</p>
+            <p className="text-sm text-gray-500">잠시만 기다려주세요</p>
+          </div>
+        </div>
+      )}
 
       <div className={`category-grid ${isFormVisible ? 'shift-up' : ''}`}>
         {categories.map((category, index) => (
@@ -163,8 +192,8 @@ const Clothes = ({ sInfo }) => {
                         </div>
                       </div>
                     ))}
-                    <button type="submit" className='btn_clothes'>
-                      완료
+                    <button type="submit" className='btn_clothes' disabled={isLoading}>
+                      {isLoading ? '처리중...' : isProcessingComplete ? 'next' : '완료'}
                     </button>
                   </form>
                 </div>

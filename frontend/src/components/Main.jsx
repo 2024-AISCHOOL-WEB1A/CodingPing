@@ -51,28 +51,6 @@ const Main = () => {
             </div>
           </div>
         </div>
-        <div className="wt-hero-footer">
-          {/* 클래스 내에 카드와 폰 이미지가 있지만 우리가 사용하지 않기 때문에 추후 활용 가능성 생각해보기 */}
-          <div className="wt-hero-demo">
-            <div className="wt-hero-card"></div>
-            <div className="wt-hero-phone">
-              <div className="wt-phone">
-                <div className="wt-phone-shadow"></div>
-                <div className="wt-phone-case"></div>
-                <div className="wt-phone-screen">
-                  {/* 비디오 안 쓰니까 지워도 되는 부분일 거 같긴한데 아직 보류 
-                        주석처리 풀 시 비디오 재생관련 오류가 발생함
-                      */}
-                  <div className="wt-phone-screen-video">
-                    {/* <video preload="auto" loop muted autoPlay playsInline>
-                          <source src="/assets/video/hello.mp4" type="video/mp4" />
-                        </video> */}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </header>
   )

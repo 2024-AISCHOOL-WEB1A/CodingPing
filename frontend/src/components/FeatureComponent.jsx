@@ -78,7 +78,7 @@ const FeatureComponent = ({setUser}) => {
                             in2="warp"></feDisplacementMap>
                         </filter>
                       </defs>
-                      <image xlinkHref="/img/feature5.png" style={{ filter: 'url(#feaute-demo-filter-3)' }}
+                      <image xlinkHref="/img/feature6.png" style={{ filter: 'url(#feaute-demo-filter-3)' }}
                         width="463" height="463" x="0" y="0"></image>
                     </svg>
                   </div>
