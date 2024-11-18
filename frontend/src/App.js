@@ -10,6 +10,7 @@ import Measurement from './pages/Measurement';
 import Header from './components/Header';
 import Mypage from './pages/Mypage';
 import Clothes from './pages/Clothes';
+import Heatmap from './pages/Heatmap';
 
 function App() {
   const location = useLocation();
@@ -102,6 +103,7 @@ function App() {
           <Route path='/measurement' element={<Measurement sInfo={sInfo} />} />
           <Route path='/mypage' element={<Mypage sInfo={sInfo} />} />
           <Route path='/clothes' element={<Clothes sInfo={sInfo} />}></Route>
+          <Route path='/heatmap' element={<Heatmap/>}></Route>
         </Routes>
       </div>
     </div>

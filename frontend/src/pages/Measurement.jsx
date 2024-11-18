@@ -136,13 +136,13 @@ const Measurement = ({ sInfo }) => {
                 <input
                   className={`input-gender-button ${gender === 'male' ? 'selected' : ''}`}
                   type="button"
-                  value="male"
+                  value="남성"
                   onClick={() => handleGenderChange('male')}
                 />
                 <input
                   className={`input-gender-button ${gender === 'female' ? 'selected' : ''}`}
                   type="button"
-                  value="female"
+                  value="여성"
                   onClick={() => handleGenderChange('female')}
                 />
               </div>
