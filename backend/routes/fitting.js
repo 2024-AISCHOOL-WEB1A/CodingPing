@@ -66,7 +66,7 @@ router.post("/clothes", async (req, res) => {
 
         if (result) {
             // FastAPI 서버 URL 
-            const url = "https://deb5-114-110-128-38.ngrok-free.app";
+            const url = "https://aed7-114-110-128-38.ngrok-free.app";
             const response = await axios.post(`${url}/fitting`, { clothesType, clothesSizes, result }, {
                 headers: { "Content-Type": "application/json" },
                 maxBodyLength: Infinity  // Body 길이 무제한 설정 (대용량 데이터 전송을 위한 설정)

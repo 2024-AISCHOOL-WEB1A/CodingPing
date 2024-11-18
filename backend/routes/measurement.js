@@ -2,7 +2,7 @@
         1. 사용자가 본인의 사진을 Mesurement.jsx 에서 업로드 했을 때 multer 방식을 이용해서 upload 폴더에 사용자의 이미지가 저장됨.
         2. router.post("/measurement") 구문을 통해 FastAPI 서버로 사용자의 이미지가 전달 됨.
         3. FastAPI 서버에 전달된 사용자의 이미지가 모델링 후 결과 이미지가 react 서버로 넘어와서 image 폴더에 저장됨.
-*/ 
+*/
 
 
 const express = require('express');
@@ -36,20 +36,20 @@ const upload = multer({ storage: storage });
 
 // ** 파일 삭제 스케줄링 함수 정의 **
 // 사용자가 Measurement.jsx 에서 업로드한 이미지를 일정 시간 (1시간) 후에 upload 폴더에서 자동으로 삭제하기 위한 함수
-const scheduleFileDelete = (filename) => {  
+const scheduleFileDelete = (filename) => {
     const filePath = path.join(__dirname, "..", "/upload", filename);
 
     // 1시간 후 삭제 예약
     const deleteTime = new Date(Date.now() + 60 * 60 * 1000);
-    
-    schedule.scheduleJob(deleteTime, function() {
-        fs.unlink(filePath, (err) => {  // 지정된 시간이 되면 파일 삭제
-            if (err) {
+
+    schedule.scheduleJob(deleteTime, function () {
+        fs.unlink(filePath, (err) => {
+            if (err && err.code !== 'ENOENT') {  // ENOENT: 파일이 존재하지 않음
                 console.error(`파일 삭제 실패: ${filename}`, err);
             } else {
                 console.log(`파일 삭제 완료: ${filename}`);
             }
-        });
+        });        
     });
 }
 
@@ -78,17 +78,21 @@ router.post("/", upload.single("image"), async (req, res) => {
         const formData = new FormData();
         formData.append("height", height);
         formData.append("weight", weight);
-        formData.append('file', fs.createReadStream(file.path), file.originalname);  // 업로드된 이미지를 파일 스트림으로 추가
+        // formData.append('file', fs.createReadStream(file.path), file.originalname);  // 업로드된 이미지를 파일 스트림으로 추가
+        // 파일을 스트림 방식으로 추가
+        const stream = fs.createReadStream(file.path);
+        stream.on('error', (err) => console.error("스트림 에러:", err));
+        formData.append('file', stream, file.originalname);  // 스트림으로 파일 추가
 
         // FastAPI 서버 URL (ngrok URL 이므로 수시로 바뀔 수 있음)
-        const url = "https://f684-114-110-128-38.ngrok-free.app";
+        const url = "https://aed7-114-110-128-38.ngrok-free.app";
         const response = await axios.post(`${url}/predict`, formData, {
             headers: formData.getHeaders(),
             maxBodyLength: Infinity,  // Body 길이 무제한 설정 (대용량 데이터 전송을 위한 설정)
             // httpsAgent: agent  // SSL 검증을 비활성화할 수 있습니다 (테스트 환경에서만 사용 권장)
         });
 
-        console.log("FastAPI서버에서 받은 response data : ", response.data); 
+        console.log("FastAPI서버에서 받은 response data : ", response.data);
         res.json({ message: "Image processed by FastAPI server", data: response.data });  // FastAPI 서버로 전송된 이미지 경로를 React 서버에 전달
 
         // 모델링을 통해서 나온 사용자의 신체 정보를 DB 에 저장
@@ -131,8 +135,6 @@ router.post("/", upload.single("image"), async (req, res) => {
         console.error("상세 에러 정보:", {
             message: err.message,
             code: err.code,
-            url: err.config?.url,
-            method: err.config?.method,
             response: err.response?.data
         });
         res.status(500).json({ error: "서버 연결 실패", details: err.message });
@@ -142,16 +144,16 @@ router.post("/", upload.single("image"), async (req, res) => {
 
 // ** POST /meshImageSave 요청 라우트 **
 // FastAPI 서버에서 모델링을 통해 나온 결과 이미지를 image 폴더에 저장
-router.post('/meshImageSave', upload.single('file'), (req, res) => {
-    const tempPath = req.file.path;  // 임시 업로드 경로
-    const targetPath = path.join(__dirname, '..', 'image', req.file.originalname);  // 최종 저장 경로
+// router.post('/meshImageSave', upload.single('file'), (req, res) => {
+//     const tempPath = req.file.path;  // 임시 업로드 경로
+//     const targetPath = path.join(__dirname, '..', 'image', req.file.originalname);  // 최종 저장 경로
 
-    // 임시 경로의 파일을 최종 경로로 이동 (rename 함수로 경로 변경)
-    fs.rename(tempPath, targetPath, err => {
-        if (err) return res.status(500).json({ message: "Failed to save image" });
-        res.status(200).json({ message: "Image uploaded successfully", path: targetPath });
-    });
-});
+//     // 임시 경로의 파일을 최종 경로로 이동 (rename 함수로 경로 변경)
+//     fs.rename(tempPath, targetPath, err => {
+//         if (err) return res.status(500).json({ message: "Failed to save image" });
+//         res.status(200).json({ message: "Image uploaded successfully", path: targetPath });
+//     });
+// });
 
 
 // ** < GET /mypage 요청 라우트 > **
