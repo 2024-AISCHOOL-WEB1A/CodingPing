@@ -66,16 +66,12 @@ router.post("/clothes", async (req, res) => {
 
         if (result) {
             // FastAPI 서버 URL 
-            const url = "https://aed7-114-110-128-38.ngrok-free.app";
+            const url = "https://da0a-114-110-128-38.ngrok-free.app";
             const response = await axios.post(`${url}/fitting`, { clothesType, clothesSizes, result }, {
                 headers: { "Content-Type": "application/json" },
                 maxBodyLength: Infinity  // Body 길이 무제한 설정 (대용량 데이터 전송을 위한 설정)
             });
             console.log("FastAPI 에서 가져온 결과 값들 : ", response.data);
-
-            // FastAPI에서 받은 image_path를 사용하여 파일명 생성
-            // const fileName = generateFileName(response.data.image_path);
-            // req.generatedFileName = fileName;
 
             if (clothesType === "t-shirt" || clothesType === "shirt") {
                 const sql = `INSERT INTO top_fitting (user_id, top_type, top_length, shoulder_width, chest_width, arm_length, fitting_img) VALUES (?, ?, ?, ? ,?, ?, ?)`;
@@ -84,7 +80,8 @@ router.post("/clothes", async (req, res) => {
                         console.log("DB 저장 실패 : ", err);
                         return res.status(500).json({ error: "Database error" });
                     } else {
-                        console.log("DB 저장 성공 !!");   
+                        console.log("DB 저장 성공 !!");
+                        res.json({ success: true });   
                     }
                 });
             } else {
@@ -95,6 +92,7 @@ router.post("/clothes", async (req, res) => {
                         return res.status(500).json({ error: "Database error" });
                     } else {
                         console.log("DB 저장 성공 !!");
+                        res.json({ success: true });
                     }
                 });
             }
@@ -111,11 +109,62 @@ router.post("/clothes", async (req, res) => {
 
 
 // - FastAPI 서버로부터 이미지를 받는 엔드포인트
-router.post('/fitting_image', upload.single('file'), (req, res) => {
-    if (!req.file) {
-        return res.status(400).json({ error: '이미지 파일이 없습니다.' });
-    } else {
-        res.status(200).json({ message: '이미지 파일이 성공적으로 저장되었습니다.', filePath: req.file.path });  // 이미지가 성공적으로 저장되었음을 응답
+// router.post('/fitting_image', upload.single('file'), (req, res) => {
+//     if (!req.file) {
+//         return res.status(400).json({ error: '이미지 파일이 없습니다.' });
+//     } else {
+//         res.status(200).json({ message: '이미지 파일이 성공적으로 저장되었습니다.', filePath: req.file.path });  // 이미지가 성공적으로 저장되었음을 응답
+//     }
+// });
+
+router.get("/heatmap/:userId", async (req, res) => {
+    const userId = req.params.userId;
+    console.log("Received request for userId:", userId);
+
+    try {
+        const query = `
+            SELECT fitting_img, fitting_date
+            FROM (
+                SELECT fitting_img, fitting_date
+                FROM top_fitting
+                WHERE user_id = ?
+                UNION ALL
+                SELECT fitting_img, fitting_date
+                FROM btm_fitting
+                WHERE user_id = ?
+            ) combined
+            ORDER BY fitting_date DESC
+            LIMIT 1
+        `;
+        
+        console.log("Executing query with userId:", userId); // 쿼리 실행 로깅
+        
+        const [result] = await conn.promise().query(query, [userId, userId]);
+        console.log("Query result:", result); // 쿼리 결과 로깅
+        
+        // CORS 헤더 추가
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Content-Type', 'application/json');
+        
+        if (result.length > 0) {
+            res.json({ 
+                success: true, 
+                imagePath: result[0].fitting_img,
+                createdAt: result[0].fitting_date
+            });
+        } else {
+            res.json({ 
+                success: false, 
+                message: "이미지를 찾을 수 없습니다." 
+            });
+        }
+    } catch (error) {
+        console.error("Database error:", error); // 상세 에러 로깅
+        res.status(500).json({ 
+            success: false, 
+            message: "서버 에러가 발생했습니다.",
+            error: error.message 
+        });
     }
 });
 

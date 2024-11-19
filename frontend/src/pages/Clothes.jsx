@@ -122,7 +122,9 @@ const Clothes = ({ sInfo }) => {
     try {
       const res = await instance.post("/fitting/clothes", { inputSizes: measurements, clothesType: selectedCategory, userId: sInfo.user_id });
       // 처리 완료 상태로 변경
-      setIsProcessingComplete(true);
+      setIsLoading(false);
+      setIsProcessingComplete(res.data.success);
+      console.log(isProcessingComplete);
     } catch (err) {
       console.log(err);
     } finally {
