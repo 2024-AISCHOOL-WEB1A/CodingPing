@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import instance from '../axios';
 import { Loader2 } from 'lucide-react' 
 import { useNavigate } from 'react-router-dom'
-// npm install -D tailwindcss postcss autoprefixer, npx tailwindcss init -p, npm i lucide-react 해야됨
+// npm install -D tailwindcss postcss autoprefixer,  npm i lucide-react 해야됨
 
 const Measurement = ({ sInfo }) => {
   const navigate = useNavigate();
