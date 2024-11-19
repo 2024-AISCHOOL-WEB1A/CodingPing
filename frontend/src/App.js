@@ -103,7 +103,7 @@ function App() {
           <Route path='/measurement' element={<Measurement sInfo={sInfo} />} />
           <Route path='/mypage' element={<Mypage sInfo={sInfo} />} />
           <Route path='/clothes' element={<Clothes sInfo={sInfo} />}></Route>
-          <Route path='/heatmap' element={<Heatmap/>}></Route>
+          <Route path='/heatmap' element={<Heatmap sInfo={sInfo} />}></Route>
         </Routes>
       </div>
     </div>

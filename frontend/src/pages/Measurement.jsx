@@ -145,8 +145,7 @@ const Measurement = ({ sInfo }) => {
             required
           />
           {imagePath ? (
-            <img 
-              // src={`http://localhost:3007/image/${imagePath}`} 
+            <img  
               src={`${imagePath}`} 
               alt="Uploaded" 
               className="uploaded-image"
