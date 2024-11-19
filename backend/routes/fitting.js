@@ -1,29 +1,22 @@
 const express = require('express');
 const router = express.Router();
-const path = require("path");
-const fs = require("fs");  // 파일 시스템을 다루기 위한 fs 모듈 불러옴
+// const path = require("path");
 const axios = require("axios");  // HTTP 요청을 위한 axios 모듈 불러옴  // npm i axios 
-const multer = require("multer");  // 파일 업로드를 위한 multer 모듈 불러옴  // npm i multer
-const { v4: uuidv4 } = require('uuid');  // uuid 라이브러리 불러오기  //  npm i uuid
+// const multer = require("multer");  // 파일 업로드를 위한 multer 모듈 불러옴  // npm i multer
 const conn = require("../config/database");
 
 
-// 파일명을 생성하는 함수를 별도로 분리
-// const generateFileName = (originalName) => {
-//     return `${uuidv4()}_${originalName}`;
-// };
-
 // ** < FastAPI 에서 보낸 히트맵 피팅 이미지를 fitting_image 폴더에 저장하는 코드 > **
 // - multer 설정: fitting_image 폴더에 이미지 저장 (FastAPI 서버에서 받은 이미지 저장하는 것)
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'fitting_image'); // fitting_image 폴더에 저장
-    },
-    filename: (req, file, cb) => {
-        cb(null, file.originalname);
-    },
-});
-const upload = multer({ storage: storage });
+// const storage = multer.diskStorage({
+//     destination: (req, file, cb) => {
+//         cb(null, 'fitting_image'); // fitting_image 폴더에 저장
+//     },
+//     filename: (req, file, cb) => {
+//         cb(null, file.originalname);
+//     },
+// });
+// const upload = multer({ storage: storage });
 
 
 router.post("/clothes", async (req, res) => {
@@ -66,7 +59,7 @@ router.post("/clothes", async (req, res) => {
 
         if (result) {
             // FastAPI 서버 URL 
-            const url = "https://da0a-114-110-128-38.ngrok-free.app";
+            const url = "https://4a15-114-110-128-38.ngrok-free.app";
             const response = await axios.post(`${url}/fitting`, { clothesType, clothesSizes, result }, {
                 headers: { "Content-Type": "application/json" },
                 maxBodyLength: Infinity  // Body 길이 무제한 설정 (대용량 데이터 전송을 위한 설정)
@@ -107,15 +100,6 @@ router.post("/clothes", async (req, res) => {
     }
 });
 
-
-// - FastAPI 서버로부터 이미지를 받는 엔드포인트
-// router.post('/fitting_image', upload.single('file'), (req, res) => {
-//     if (!req.file) {
-//         return res.status(400).json({ error: '이미지 파일이 없습니다.' });
-//     } else {
-//         res.status(200).json({ message: '이미지 파일이 성공적으로 저장되었습니다.', filePath: req.file.path });  // 이미지가 성공적으로 저장되었음을 응답
-//     }
-// });
 
 router.get("/heatmap/:userId", async (req, res) => {
     const userId = req.params.userId;
