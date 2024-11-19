@@ -300,6 +300,39 @@
   background-color: #2128bd;
 }
 
+.birth-group {
+  display: flex;
+  align-items: center;
+}
+
+.birth-select-group {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+.birth-select {
+  flex: 1;
+  padding: 12px 12px 12px 12px;
+  border: 1px solid #dadada;
+  border-radius: 6px;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.2s ease;
+  cursor: pointer;
+  color: #333;
+  background-color: white;
+}
+
+.birth-select:focus {
+  border-color: #2128bd;
+}
+
+.birth-select option {
+  color: #333;
+}
+
+
 /* 반응형 디자인 */
 @media (max-width: 480px) {
   .join-box {
@@ -1072,6 +1105,34 @@ form label {
 }
 
 /* 히트맵 페이지 css 끝 */
+
+/* 404 페이지 css 시작 */
+
+.page_wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.notfound_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.notfound_container h3 {
+  text-align: center;
+  font-size: 1rem;
+}
+
+.notfound_img {
+  width: 200px;
+  height: 200px;
+}
+
+/* 404 페이지 css 끝 */
 
 /*! normalize.css v7.0.0 | MIT License | github.com/necolas/normalize.css */
 html {

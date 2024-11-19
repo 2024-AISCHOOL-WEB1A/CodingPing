@@ -11,9 +11,12 @@ import Header from './components/Header';
 import Mypage from './pages/Mypage';
 import Clothes from './pages/Clothes';
 import Heatmap from './pages/Heatmap';
+import NotFoundPage from './pages/NotFoundPage';
 
 function App() {
   const location = useLocation();
+  // 404가 나오면 안되는 페이지를 정의
+  const is404Page = !['/', '/join', '/login', '/measurement', '/mypage', '/clothes', '/heatmap'].includes(location.pathname);
   const [isHome, setIsHome] = useState(location.pathname === '/');
   const [user, setUser] = useState();
   const [sInfo, setSInfo] = useState();
@@ -94,7 +97,11 @@ function App() {
 
   return (
     <div className="App">
-      <Header user={user} setUser={setUser} />
+      {/* <Header user={user} setUser={setUser} /> */}
+      {/* 404페이지면 헤더가 나오지 않게 설정 */}
+      {!is404Page && (
+        <Header user={user} setUser={setUser} />
+      )}
       <div id="content"> {/* 스크롤바를 적용할 컨테이너 추가 */}
         <Routes>
           <Route path='/' element={<Home setUser={setUser} user={user} />} />
@@ -103,7 +110,8 @@ function App() {
           <Route path='/measurement' element={<Measurement sInfo={sInfo} />} />
           <Route path='/mypage' element={<Mypage sInfo={sInfo} />} />
           <Route path='/clothes' element={<Clothes sInfo={sInfo} />}></Route>
-          <Route path='/heatmap' element={<Heatmap sInfo={sInfo} />}></Route>
+          <Route path='/heatmap' element={<Heatmap sInfo={sInfo}/>}></Route>
+          <Route path='/*' element={<NotFoundPage/>}></Route>
         </Routes>
       </div>
     </div>

@@ -1,17 +1,35 @@
 import React, { useState } from 'react';
-import { User, Lock, Calendar } from 'lucide-react'; // npm install lucide-react
+import { User, Lock, Calendar } from 'lucide-react';
 import instance from '../axios';
 
 const Join = () => {
   const [id, setId] = useState('');
   const [pw, setPw] = useState('');
-  const [repw, setRepw] = useState('');
   const [userName, setUserName] = useState('');
   const [userGender, setUserGender] = useState('');
-  const [userBirth, setUserBirth] = useState('');
+  
+  const [birthYear, setBirthYear] = useState('');
+  const [birthMonth, setBirthMonth] = useState('');
+  const [birthDay, setBirthDay] = useState('');
+
+  const currentYear = new Date().getFullYear();
+  const years = Array.from({ length: currentYear - 1900 + 1 }, (_, i) => currentYear - i);
+  const months = Array.from({ length: 12 }, (_, i) => i + 1);
+  
+  const getDaysInMonth = (year, month) => {
+    return new Date(year, month, 0).getDate();
+  };
+
+  const days = birthYear && birthMonth 
+    ? Array.from({ length: getDaysInMonth(birthYear, birthMonth) }, (_, i) => i + 1)
+    : Array.from({ length: 31 }, (_, i) => i + 1);
 
   const sendData = async (e) => {
     e.preventDefault();
+
+    const formattedBirth = birthYear && birthMonth && birthDay
+      ? `${birthYear}-${birthMonth.toString().padStart(2, '0')}-${birthDay.toString().padStart(2, '0')}`
+      : '';
 
     try {
       const res = await instance.post("/join", {
@@ -19,13 +37,12 @@ const Join = () => {
         pw: pw,
         name: userName,
         gender: userGender,
-        birth: userBirth
+        birth: formattedBirth
       });
 
       if (res.data.result === "success") {
         window.alert("회원가입 성공 !!")
-        // nav("/") 대신 window.location.href 사용 로그인 성공 후 메인페이지 이동시 동적효과 작동을 위하여
-        window.location.href = '/';
+        window.location.href = '/login';
       } else {
         window.alert("회원 가입에 실패하셨습니다. 다시 한 번 시도해주세요.");
       }
@@ -78,15 +95,42 @@ const Join = () => {
             />
           </div>
 
-          <div className="input-group">
-            <div className="input-icon">
+          <div className="input-group birth-group">
+            {/* <div className="input-icon">
               <Calendar size={20} />
+            </div> */}
+            <div className="birth-select-group">
+              <select
+                value={birthYear}
+                onChange={(e) => setBirthYear(e.target.value)}
+                className="birth-select"
+              >
+                <option value="">년도</option>
+                {years.map(year => (
+                  <option key={year} value={year}>{year}년</option>
+                ))}
+              </select>
+              <select
+                value={birthMonth}
+                onChange={(e) => setBirthMonth(e.target.value)}
+                className="birth-select"
+              >
+                <option value="">월</option>
+                {months.map(month => (
+                  <option key={month} value={month}>{month}월</option>
+                ))}
+              </select>
+              <select
+                value={birthDay}
+                onChange={(e) => setBirthDay(e.target.value)}
+                className="birth-select"
+              >
+                <option value="">일</option>
+                {days.map(day => (
+                  <option key={day} value={day}>{day}일</option>
+                ))}
+              </select>
             </div>
-            <input
-              type="date"
-              value={userBirth}
-              onChange={(e) => setUserBirth(e.target.value)}
-            />
           </div>
 
           <div className="gender-group">
