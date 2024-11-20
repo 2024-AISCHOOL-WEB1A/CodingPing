@@ -566,6 +566,10 @@ html, body {
   transition: background-color 0.2s;
 }
 
+.table-section th {
+  text-align: center;
+}
+
 .table-container {
   flex: 1;
   display: flex;
