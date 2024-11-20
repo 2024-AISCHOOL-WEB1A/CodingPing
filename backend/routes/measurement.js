@@ -1,10 +1,3 @@
-/** [ 사용자가 본인의 신체 측정을 할 때 작동되는 js 코드 ] 
-        1. 사용자가 본인의 사진을 Mesurement.jsx 에서 업로드 했을 때 multer 방식을 이용해서 upload 폴더에 사용자의 이미지가 저장됨.
-        2. router.post("/measurement") 구문을 통해 FastAPI 서버로 사용자의 이미지가 전달 됨.
-        3. FastAPI 서버에 전달된 사용자의 이미지가 모델링 후 결과 이미지가 react 서버로 넘어와서 image 폴더에 저장됨.
-*/
-
-
 const express = require('express');
 const router = express.Router();
 const path = require("path");
@@ -14,8 +7,7 @@ const multer = require("multer");  // 파일 업로드를 위한 multer 모듈 �
 const schedule = require("node-schedule");  // 스케줄링을 위해 node-schedule 모듈 불러옴  // npm i node-schedule
 const FormData = require('form-data');  // npm install form-data
 const conn = require("../config/database");
-// const https = require('https');
-// const agent = new https.Agent({ rejectUnauthorized: false });
+
 
 
 /** multer 스토리지 설정 */
@@ -85,7 +77,7 @@ router.post("/", upload.single("image"), async (req, res) => {
         formData.append('file', stream, file.originalname);  // 스트림으로 파일 추가
 
         // FastAPI 서버 URL (ngrok URL 이므로 수시로 바뀔 수 있음)
-        const url = "https://ce72-114-110-128-38.ngrok-free.app";
+        const url = "https://4fc7-114-110-128-38.ngrok-free.app";
         const response = await axios.post(`${url}/predict`, formData, {
             headers: formData.getHeaders(),
             maxBodyLength: Infinity,  // Body 길이 무제한 설정 (대용량 데이터 전송을 위한 설정)
@@ -142,20 +134,6 @@ router.post("/", upload.single("image"), async (req, res) => {
 });
 
 
-// ** POST /meshImageSave 요청 라우트 **
-// FastAPI 서버에서 모델링을 통해 나온 결과 이미지를 image 폴더에 저장
-// router.post('/meshImageSave', upload.single('file'), (req, res) => {
-//     const tempPath = req.file.path;  // 임시 업로드 경로
-//     const targetPath = path.join(__dirname, '..', 'image', req.file.originalname);  // 최종 저장 경로
-
-//     // 임시 경로의 파일을 최종 경로로 이동 (rename 함수로 경로 변경)
-//     fs.rename(tempPath, targetPath, err => {
-//         if (err) return res.status(500).json({ message: "Failed to save image" });
-//         res.status(200).json({ message: "Image uploaded successfully", path: targetPath });
-//     });
-// });
-
-
 // ** < GET /mypage 요청 라우트 > **
 // body_tb 테이블에서 신체 측정 정보를 가져온 후 JSON 형식으로 Mypage.jsx 에 전달
 router.get("/mypage", async (req, res) => {
@@ -169,7 +147,7 @@ router.get("/mypage", async (req, res) => {
         // body_tb 테이블에서 데이터를 가져오는 sql 쿼리문
         const sql = `
                         SELECT height, weight, arm_length, forearm_length, upper_length, leg_length,
-                               shoulder_width, waist_width, chest_width, hip_width, thigh_width, measurement_date 
+                               shoulder_width, waist_width, chest_width, hip_width, thigh_width, image, measurement_date
                         FROM body_measurement
                         WHERE user_id = ?
                         ORDER BY measurement_date DESC
