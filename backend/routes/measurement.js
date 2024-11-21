@@ -26,8 +26,10 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 
-// ** 파일 삭제 스케줄링 함수 정의 **
-// 사용자가 Measurement.jsx 에서 업로드한 이미지를 일정 시간 (1시간) 후에 upload 폴더에서 자동으로 삭제하기 위한 함수
+/** 파일 삭제 스케줄링 함수
+ * 사용자가 Measurement.jsx 에서 업로드한 이미지를 일정 시간 (1시간) 후에 upload 폴더에서 자동으로 삭제하기 위한 함수
+ * @param {string} filename - 삭제할 파일명
+ */
 const scheduleFileDelete = (filename) => {
     const filePath = path.join(__dirname, "..", "/upload", filename);
 
@@ -56,8 +58,9 @@ const scheduleFileDelete = (filename) => {
     4. 새로 연 터미널 창에서 backend 폴더로 진입 후 터미널 창에 "ngrok http 3007" 을 입력한다.
     5. Forwarding 옆에 출력된 url 주소를 FastAPI 서버의 main.py 에 복붙을 한다.
 */
-// ** POST / 측정 요청 라우트 **
-// 사용자가 업로드한 이미지와 신체 정보를 FastAPI 서버로 전송하는 요청 처리
+/** < 신체 측정 라우트 >
+ * 이미지를 FastAPI 서버로 전송하고 FastAPI 서버에서 모델 실행을 통해 측정된 데이터를 데이터베이스에 저장
+ */
 router.post("/", upload.single("image"), async (req, res) => {
     const { userId, gender, height, weight } = req.body;
     const file = req.file;  // multer로 업로드된 이미지 파일 정보
@@ -70,22 +73,20 @@ router.post("/", upload.single("image"), async (req, res) => {
         const formData = new FormData();
         formData.append("height", height);
         formData.append("weight", weight);
-        // formData.append('file', fs.createReadStream(file.path), file.originalname);  // 업로드된 이미지를 파일 스트림으로 추가
+        
         // 파일을 스트림 방식으로 추가
         const stream = fs.createReadStream(file.path);
         stream.on('error', (err) => console.error("스트림 에러:", err));
         formData.append('file', stream, file.originalname);  // 스트림으로 파일 추가
 
         // FastAPI 서버 URL (ngrok URL 이므로 수시로 바뀔 수 있음)
-        const url = "https://4fc7-114-110-128-38.ngrok-free.app";
-        const response = await axios.post(`${url}/predict`, formData, {
+        const url = "https://5592-114-110-128-38.ngrok-free.app";
+        const response = await axios.post(`${url}/api/predict`, formData, {
             headers: formData.getHeaders(),
             maxBodyLength: Infinity,  // Body 길이 무제한 설정 (대용량 데이터 전송을 위한 설정)
-            // httpsAgent: agent  // SSL 검증을 비활성화할 수 있습니다 (테스트 환경에서만 사용 권장)
         });
 
-        console.log("FastAPI서버에서 받은 response data : ", response.data);
-        res.json({ message: "Image processed by FastAPI server", data: response.data });  // FastAPI 서버로 전송된 이미지 경로를 React 서버에 전달
+        // console.log("FastAPI서버에서 받은 response data : ", response.data);
 
         // 모델링을 통해서 나온 사용자의 신체 정보를 DB 에 저장
         const sql = `INSERT INTO body_measurement
@@ -97,10 +98,7 @@ router.post("/", upload.single("image"), async (req, res) => {
                         )
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
         conn.query(sql, [
-            userId,  // 현재 로그인한 사용자의 ID
-            gender,
-            height,
-            weight,
+            userId, gender, height, weight,
             response.data.measurements.arm_length,  // 팔 길이
             response.data.measurements.forearm_length,  // 팔뚝 길이
             response.data.measurements.upper_length,  // 상체 길이
@@ -117,10 +115,11 @@ router.post("/", upload.single("image"), async (req, res) => {
             response.data.image_path,  // image 폴더에 저장된 사용자의 3D Mesh 이미지파일 이름
         ], (err, rows) => {
             if (err) {  // 모델링 된 결과를 DB 에 저장 실패했을 시 에러 처리
-                console.log("DB 저장 실패 : ", err);
-                return res.status(500).json({ error: "Database error" });
+                console.log("데이터베이스 저장 실패 : ", err);
+                return res.status(500).json({ error: "데이터베이스 오류" });
             } else {  // DB 에 저장 성공 시 클라이언트에 성공 응답 전송
-                console.log("체형 측정 값 DB 저장 성공 !!");
+                console.log("신체치수 측정 데이터 데이터베이스 저장 성공 !!");
+                res.json({ message: "FastAPI 서버에서 이미지 처리 완료", data: response.data });  // FastAPI 서버로 전송된 이미지 경로를 React 서버에 전달
             }
         });
     } catch (err) {
@@ -134,17 +133,18 @@ router.post("/", upload.single("image"), async (req, res) => {
 });
 
 
-// ** < GET /mypage 요청 라우트 > **
-// body_tb 테이블에서 신체 측정 정보를 가져온 후 JSON 형식으로 Mypage.jsx 에 전달
+/** < 마이페이지에서 사용자의 신체 측정 정보를 조회하는 라우트 >
+ * 사용자가 가장 최근에 신체 치수 측정한 3개의 정보를 불러옴
+ */
 router.get("/mypage", async (req, res) => {
     try {
         const userId = req.query.user_id;
-        console.log("userId : ", userId);
+
         if (!userId) {
             return res.status(400).json({ error: "userId가 필요합니다." });
         }
 
-        // body_tb 테이블에서 데이터를 가져오는 sql 쿼리문
+        // 최근 3개의 신체 측정 데이터를 가져오는 SQL 쿼리
         const sql = `
                         SELECT height, weight, arm_length, forearm_length, upper_length, leg_length,
                                shoulder_width, waist_width, chest_width, hip_width, thigh_width, image, measurement_date
@@ -155,9 +155,9 @@ router.get("/mypage", async (req, res) => {
                     `;
         conn.query(sql, [userId], (err, rows) => {
             if (err || rows.length === 0) {
-                console.log("DB 에서 값 불러오기 실패 .. : ", err);
+                console.log("데이터베이스에서 값 불러오기 실패 : ", err);
             } else {
-                console.log("DB 에서 값 가져오기 성공 !");
+                console.log("데이터베이스에서 값 가져오기 성공 !");
                 res.json({ measurements: rows });
             }
         });

@@ -1,26 +1,12 @@
 const express = require('express');
 const router = express.Router();
-// const path = require("path");
 const axios = require("axios");  // HTTP 요청을 위한 axios 모듈 불러옴  // npm i axios 
-// const multer = require("multer");  // 파일 업로드를 위한 multer 모듈 불러옴  // npm i multer
 const conn = require("../config/database");
-
-
-// ** < FastAPI 에서 보낸 히트맵 피팅 이미지를 fitting_image 폴더에 저장하는 코드 > **
-// - multer 설정: fitting_image 폴더에 이미지 저장 (FastAPI 서버에서 받은 이미지 저장하는 것)
-// const storage = multer.diskStorage({
-//     destination: (req, file, cb) => {
-//         cb(null, 'fitting_image'); // fitting_image 폴더에 저장
-//     },
-//     filename: (req, file, cb) => {
-//         cb(null, file.originalname);
-//     },
-// });
-// const upload = multer({ storage: storage });
 
 
 router.post("/clothes", async (req, res) => {
     const userId = req.body.userId;
+    const imagePath = req.body.imagePath;
     let clothesSizes = req.body.inputSizes;
     let clothesType = "";
     if (req.body.clothesType === "반팔") { clothesType = "t-shirt"; }
@@ -35,14 +21,12 @@ router.post("/clothes", async (req, res) => {
                 shoulder_width, waist_width, chest_width, hip_width, thigh_width,
                 chest_circ, hip_circ, waist_circ
             FROM body_measurement
-            WHERE user_id = ?
-            ORDER BY measurement_date DESC
-            LIMIT 1
+            WHERE user_id = ? AND image = ?
         `;
 
         // Promise 는 비동기 작업이 성공하거나 실패했을 때 그 결과를 반환하기 위해 사용
         let result = await new Promise((resolve, reject) => {  // 실행이 완료되면 resolve 를 반환, 실패하면 reject 를 반환
-            conn.query(sql, [userId], (err, rows) => {
+            conn.query(sql, [userId, imagePath], (err, rows) => {
                 if (err) {
                     console.log("DB 에서 값 불러오기 실패 .. : ", err);
                     reject(err);  // 여기서 Promise 를 reject 하여 catch 블록으로 이동하게 만듬
@@ -53,14 +37,14 @@ router.post("/clothes", async (req, res) => {
             });
         });
 
-        console.log("옷 타입 : ", clothesType);
-        console.log("사용자가 입력한 옷 사이즈 : ", clothesSizes);
-        console.log("DB 에서 가져온 사용자의 신체 측정 치수 값 : ", result);
+        // console.log("옷 타입 : ", clothesType);
+        // console.log("사용자가 입력한 옷 사이즈 : ", clothesSizes);
+        // console.log("DB 에서 가져온 사용자의 신체 측정 치수 값 : ", result);
 
         if (result) {
             // FastAPI 서버 URL 
-            const url = "https://4fc7-114-110-128-38.ngrok-free.app";
-            const response = await axios.post(`${url}/fitting`, { clothesType, clothesSizes, result }, {
+            const url = "https://5592-114-110-128-38.ngrok-free.app";
+            const response = await axios.post(`${url}/api/fitting`, { clothesType, clothesSizes, result }, {
                 headers: { "Content-Type": "application/json" },
                 maxBodyLength: Infinity  // Body 길이 무제한 설정 (대용량 데이터 전송을 위한 설정)
             });
@@ -121,10 +105,8 @@ router.get("/heatmap/:userId", async (req, res) => {
             LIMIT 1
         `;
         
-        console.log("Executing query with userId:", userId); // 쿼리 실행 로깅
         
         const [result] = await conn.promise().query(query, [userId, userId]);
-        console.log("Query result:", result); // 쿼리 결과 로깅
         
         // CORS 헤더 추가
         res.setHeader('Access-Control-Allow-Origin', '*');
