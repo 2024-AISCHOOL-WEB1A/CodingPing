@@ -80,7 +80,7 @@ router.post("/", upload.single("image"), async (req, res) => {
         formData.append('file', stream, file.originalname);  // 스트림으로 파일 추가
 
         // FastAPI 서버 URL (ngrok URL 이므로 수시로 바뀔 수 있음)
-        const url = "https://5592-114-110-128-38.ngrok-free.app";
+        const url = "https://1fa0-114-110-128-38.ngrok-free.app";
         const response = await axios.post(`${url}/api/predict`, formData, {
             headers: formData.getHeaders(),
             maxBodyLength: Infinity,  // Body 길이 무제한 설정 (대용량 데이터 전송을 위한 설정)
