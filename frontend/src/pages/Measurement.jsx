@@ -76,7 +76,9 @@ const Measurement = ({ sInfo }) => {
 
     // 처리가 완료된 후 버튼을 눌렀을 때
     if (isProcessingComplete) {
-      navigate('/clothes'); // 의류 측정 페이지로 이동
+      navigate('/clothes', {
+        state: {imagePath: imagePath}
+      }); // 의류 측정 페이지로 이동
       return;
     }
 

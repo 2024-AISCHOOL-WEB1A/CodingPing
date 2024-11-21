@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from '../axios';
+import { useNavigate } from 'react-router-dom';
 
 const Mypage = ({ sInfo }) => {
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (sInfo) {
@@ -49,7 +52,6 @@ const Mypage = ({ sInfo }) => {
   }, [finalInfo?.user_id]);
 
   const openModal = (imageUrl) => {
-    console.log("Opening modal with image URL:", imageUrl);
     setSelectedImage(imageUrl);
     setIsModalOpen(true);
   };
@@ -58,6 +60,13 @@ const Mypage = ({ sInfo }) => {
     setSelectedImage(null);
     setIsModalOpen(false);
   };
+
+  const handleFitCheck = () => {
+    navigate("/clothes", {
+      state: { imagePath: selectedImage }
+    });
+  };
+
 
   if (isLoading) return <div>Try 버튼을 누른 후 신체 치수 측정을 완료해주세요 ...</div>;
   if (error) return <div>{error}</div>;
@@ -74,14 +83,14 @@ const Mypage = ({ sInfo }) => {
           <img src='/img/bodyshape2.png' alt="body silhouette" />
 
           {/* 사각형 데이터 삽입 */}
-          <div className="data-box data-box-1">상체길이 {latestMeasurement.upper_length * 100}cm</div>
-          <div className="data-box data-box-2">가슴단면 {latestMeasurement.chest_width * 100}cm</div>
-          <div className="data-box data-box-3">팔뚝길이 {latestMeasurement.forearm_length * 100}cm</div>
-          <div className="data-box data-box-4">팔 길이 {latestMeasurement.arm_length * 100}cm</div>
-          <div className="data-box data-box-5">엉덩이 단면 {latestMeasurement.hip_width * 100}cm</div>
-          <div className="data-box data-box-6">허벅지단면 {latestMeasurement.thigh_width * 100}cm</div>
-          <div className="data-box data-box-7">다리 길이 {latestMeasurement.leg_length * 100}cm</div>
-          <div className="data-box data-box-8">허리단면 {latestMeasurement.waist_width * 100}cm</div>
+          <div className="data-box data-box-1">상체길이 {Math.round(latestMeasurement.upper_length * 100)}cm</div>
+          <div className="data-box data-box-2">가슴단면 {Math.round(latestMeasurement.chest_width * 100)}cm</div>
+          <div className="data-box data-box-3">팔뚝길이 {Math.round(latestMeasurement.forearm_length * 100)}cm</div>
+          <div className="data-box data-box-4">팔 길이 {Math.round(latestMeasurement.arm_length * 100)}cm</div>
+          <div className="data-box data-box-5">엉덩이 단면 {Math.round(latestMeasurement.hip_width * 100)}cm</div>
+          <div className="data-box data-box-6">허벅지단면 {Math.round(latestMeasurement.thigh_width * 100)}cm</div>
+          <div className="data-box data-box-7">다리 길이 {Math.round(latestMeasurement.leg_length * 100)}cm</div>
+          <div className="data-box data-box-8">허리단면 {Math.round(latestMeasurement.waist_width * 100)}cm</div>
 
           {/* 키와 몸무게 */}
           <div className='stats-section'>
@@ -125,15 +134,15 @@ const Mypage = ({ sInfo }) => {
                 {measurements.map((measurement, index) => (
                   <tr key={index} onClick={() => openModal(measurement.image)} >
                     <td>{formatDate(measurement.measurement_date)}</td>
-                    <td>{measurement.shoulder_width * 100}</td>
-                    <td>{measurement.chest_width * 100}</td>
-                    <td>{measurement.arm_length * 100}</td>
-                    <td>{measurement.forearm_length * 100}</td>
-                    <td>{measurement.upper_length * 100}</td>
-                    <td>{measurement.waist_width * 100}</td>
-                    <td>{measurement.hip_width * 100}</td>
-                    <td>{measurement.thigh_width * 100}</td>
-                    <td>{measurement.leg_length * 100}</td>
+                    <td>{Math.round(measurement.shoulder_width * 100)}</td>
+                    <td>{Math.round(measurement.chest_width * 100)}</td>
+                    <td>{Math.round(measurement.arm_length * 100)}</td>
+                    <td>{Math.round(measurement.forearm_length * 100)}</td>
+                    <td>{Math.round(measurement.upper_length * 100)}</td>
+                    <td>{Math.round(measurement.waist_width * 100)}</td>
+                    <td>{Math.round(measurement.hip_width * 100)}</td>
+                    <td>{Math.round(measurement.thigh_width * 100)}</td>
+                    <td>{Math.round(measurement.leg_length * 100)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -144,61 +153,38 @@ const Mypage = ({ sInfo }) => {
 
       {/* 모달 */}
       {isModalOpen && (
-        <div style={modalStyles.overlay}>
-          <div style={modalStyles.content}>
-            <img
-              src={selectedImage}
-              alt="Result"
-              style={{ maxWidth: '100%', maxHeight: '100%' }}
-              onError={(e) => console.log("Image loading error:", e)} // 이미지 로딩 에러 확인
-            />
-            <button onClick={closeModal} style={modalStyles.closeButton}>
-              닫기
-            </button>
+        <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 p-4">
+          <div className="bg-white rounded-lg p-6 w-full max-w-3xl max-h-[90vh] flex flex-col">
+            <div className="relative flex-1 min-h-0 overflow-hidden">
+              <img
+                src={selectedImage}
+                alt="Result"
+                className="object-contain w-full h-full"
+                style={{ maxHeight: 'calc(90vh - 120px)' }}
+                onError={(e) => console.log("Image loading error:", e)}
+              />
+            </div>
+            <div className="flex justify-center gap-4 mt-4">
+              <button
+                onClick={handleFitCheck}
+                className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded transition-colors"
+              >
+                핏 확인
+              </button>
+              <button
+                onClick={closeModal}
+                className="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded transition-colors"
+              >
+                닫기
+              </button>
+            </div>
           </div>
         </div>
       )}
-
     </div>
   );
 };
 
-
-// 모달 스타일 정의
-const modalStyles = {
-  overlay: {
-    position: 'fixed',
-    top: 0,
-    left: 0,
-    width: '100%',
-    height: '100%',
-    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    zIndex: 1000,
-  },
-  content: {
-    background: '#fff',
-    padding: '20px',
-    borderRadius: '8px',
-    maxWidth: '90%',
-    maxHeight: '90%',
-    textAlign: 'center',
-    position: 'relative',
-  },
-  closeButton: {
-    position: 'absolute',
-    top: '10px',
-    right: '10px',
-    background: '#ff5e57',
-    color: '#fff',
-    border: 'none',
-    padding: '5px 10px',
-    borderRadius: '5px',
-    cursor: 'pointer',
-  },
-};
 
 
 export default Mypage;

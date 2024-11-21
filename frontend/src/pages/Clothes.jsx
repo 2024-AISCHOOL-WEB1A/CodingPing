@@ -1,10 +1,29 @@
 import React, { useEffect, useRef, useState } from 'react';
 import instance from '../axios';
-import { Loader2 } from 'lucide-react' 
-import { useNavigate } from 'react-router-dom'
+import { Loader2 } from 'lucide-react'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 const Clothes = ({ sInfo }) => {
+  // 상태 관리를 위한 useState
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [isFormVisible, setIsFormVisible] = useState(false);
+  const [measurements, setMeasurements] = useState({}); // 각 입력 필드 값을 저장할 상태
+  const [isLoading, setIsLoading] = useState(false)
+  const [isProcessingComplete, setIsProcessingComplete] = useState(false);
+  const [imagePath, setimagePath] = useState("");
+
+  // formRef 생성
+  const formRef = useRef(null);
+
   const navigate = useNavigate();
+  const location = useLocation();
+  const data = location.state || {};
+  
+  useEffect(() => {
+    console.log("Measurement.jsx에서 가져온 이미지 경로 : ", data.imagePath);
+    setimagePath(data.imagePath);
+  }, [data.imagePath]);
+
 
   const categories = [
     { title: '반팔', image: '/img/short.png' },
@@ -34,16 +53,7 @@ const Clothes = ({ sInfo }) => {
     ]
   };
 
-  // 상태 관리를 위한 useState
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [isFormVisible, setIsFormVisible] = useState(false);
-  const [measurements, setMeasurements] = useState({}); // 각 입력 필드 값을 저장할 상태
-  const [isLoading, setIsLoading] = useState(false)
-  const [isProcessingComplete, setIsProcessingComplete] = useState(false);
 
-
-  // formRef 생성
-  const formRef = useRef(null);
 
   // 카테고리 클릭 처리를 위한 함수
   const handleCategoryClick = (categoryTitle) => {
@@ -114,13 +124,13 @@ const Clothes = ({ sInfo }) => {
     // 처리가 완료된 후 버튼을 눌렀을 때
     if (isProcessingComplete) {
       navigate('/heatmap') // 히트맵 페이지로 이동
-      return ;
+      return;
     }
     setIsLoading(true)
 
     console.log(measurements, selectedCategory);
     try {
-      const res = await instance.post("/fitting/clothes", { inputSizes: measurements, clothesType: selectedCategory, userId: sInfo.user_id });
+      const res = await instance.post("/fitting/clothes", { inputSizes: measurements, clothesType: selectedCategory, userId: sInfo.user_id, imagePath: imagePath });
       // 처리 완료 상태로 변경
       setIsLoading(false);
       setIsProcessingComplete(res.data.success);
@@ -141,9 +151,9 @@ const Clothes = ({ sInfo }) => {
         </p>
       </div>
 
-    {/* 로딩화면 UI */}
-    {isLoading && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      {/* 로딩화면 UI */}
+      {isLoading && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 fixed-loader">
           <div className="bg-white p-6 rounded-lg shadow-xl flex flex-col items-center">
             <Loader2 className="animate-spin h-12 w-12 text-blue-500 mb-4" />
             <p className="text-lg font-medium text-gray-700">처리중...</p>
@@ -174,7 +184,7 @@ const Clothes = ({ sInfo }) => {
               </div>
             </div>
             {selectedCategory === category.title && (
-              <div ref={formRef} className={`form-container ${isFormVisible ? 'visible' : ''}`}>
+              <div ref={formRef} className={`form-container ${isFormVisible ? 'visible' : ''} z-40`}>
                 <div className={`form-card ${isFormVisible ? 'slide-down' : ''}`}>
                   <h2 className="form-title">의류 정보 입력</h2>
                   <form className="measurement-form" onSubmit={handleSubmit}>

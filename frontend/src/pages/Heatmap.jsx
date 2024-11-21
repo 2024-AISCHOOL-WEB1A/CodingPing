@@ -51,13 +51,15 @@ const Heatmap = ({ sInfo }) => {
       <div className='page-header'>
         <h1 className='page-title'>히트맵 결과 페이지</h1>
         <p className='page-description'>
-          이 페이지에서 히트맵으로 옷의 피팅감을 확인하실 수 있습니다
+          이 페이지에서 히트맵으로 옷의 피팅감을 확인하실 수 있습니다 <br/>
+          빨간색으로 갈수록 핏이 타이트하고 파란색으로 갈수록 핏이 여유롭다는 것을 의미합니다.
         </p>
+        <img src='/img/heatmap.png' className='heatmap-image'></img>
 
         {error ? (
           <p className="error-message">에러: {error}</p>
         ) : imageData ? (
-          <div>
+          <div className='image-container'>
             <img
               src={imageData.path}
               alt="Uploaded"
